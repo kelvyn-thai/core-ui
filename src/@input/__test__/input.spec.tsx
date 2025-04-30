@@ -4,7 +4,7 @@ import { Input } from "@input/index";
 describe("Input", () => {
   it("renders with default placeholder", () => {
     render(<Input />);
-    const input = screen.getByPlaceholderText("Type something....");
+    const input = screen.getByPlaceholderText("Type something...");
     expect(input).toBeInTheDocument();
   });
 

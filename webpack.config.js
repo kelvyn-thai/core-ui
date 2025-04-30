@@ -55,6 +55,9 @@ module.exports = {
     "@label": {
       import: resolveEntry("@label/index.ts"),
     },
+    "@icon": {
+      import: resolveEntry("@icon/index.ts"),
+    },
   },
   output: {
     filename: (pathData) => {

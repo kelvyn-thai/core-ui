@@ -20,7 +20,8 @@
       "@/src/*": ["./src/*"],
       "@combobox/*": ["./src/@combobox/*"],
       "@input/*": ["./src/@input/*"],
-      "@label/*": ["./src/@label/*"]
+      "@label/*": ["./src/@label/*"],
+      "@icon/*": ["./src/@icon/*"]
     },
     "declaration": true,
     "declarationDir": "lib",

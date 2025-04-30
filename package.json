@@ -157,7 +157,8 @@
       "^@/src/(.*)$": "<rootDir>/src/$1",
       "^@combobox/(.*)$": "<rootDir>/src/@combobox/$1",
       "^@input/(.*)$": "<rootDir>/src/@input/$1",
-      "^@label/(.*)$": "<rootDir>/src/@label/$1"
+      "^@label/(.*)$": "<rootDir>/src/@label/$1",
+      "^@icon/(.*)$": "<rootDir>/src/@icon/$1"
     },
     "moduleFileExtensions": [
       "web.js",

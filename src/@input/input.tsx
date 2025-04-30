@@ -1,30 +1,26 @@
-import React, { useState } from "react";
+import React from "react";
 import clxs from "clsx";
 import "./input.less";
 
-export type IInput = {
-  placeholder?: string;
-  inputClassName?: string;
-  size?: "small" | "medium" | "large";
-};
+export type InputProps = {
+  className?: string;
+  inputSize?: "small" | "medium" | "large";
+} & React.InputHTMLAttributes<HTMLInputElement>;
 
-const Input = ({ placeholder, inputClassName, size }: IInput) => {
-  const [keySearch, setKeySearch] = useState("");
-
+const Input = ({
+  className,
+  inputSize = "medium",
+  ...inputProps
+}: InputProps) => {
   return (
-    <div>
-      <input
-        type="text"
-        placeholder={placeholder ?? "Type something...."}
-        value={keySearch}
-        onChange={(e) => setKeySearch(e.target.value)}
-        className={clxs(
-          "base-input",
-          inputClassName,
-          `storybook-base-input--${size}`,
-        )}
-      />
-    </div>
+    <input
+      type="text"
+      className={clxs("base-input", `base-input--${inputSize}`, className)}
+      {...{
+        ...inputProps,
+        placeholder: inputProps.placeholder ?? "Type something...",
+      }}
+    />
   );
 };
 

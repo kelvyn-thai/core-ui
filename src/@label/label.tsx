@@ -2,13 +2,11 @@ import React, { JSX } from "react";
 import clsx from "clsx";
 import "./label.less";
 
-export type ILabel = {
+export type LabelProps = {
   children?: JSX.Element;
   size?: "small" | "medium" | "large";
   content?: string;
-};
-
-type LabelProps = React.LabelHTMLAttributes<HTMLLabelElement>;
+} & React.LabelHTMLAttributes<HTMLLabelElement>;
 
 const Label = ({
   children,
@@ -16,7 +14,7 @@ const Label = ({
   content,
   size = "medium",
   ...labelProps
-}: ILabel & LabelProps) => {
+}: LabelProps) => {
   return (
     <label
       {...{
