@@ -1,6 +1,6 @@
 {
   "name": "core-ui",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Core UI components library",
   "main": "lib/index.js",
   "types": "./lib/index.d.ts",
@@ -90,7 +90,6 @@
     "source-map-loader": "^3.0.0",
     "storybook": "^8.6.12",
     "style-loader": "^4.0.0",
-    "tailwindcss": "^3.0.2",
     "terser-webpack-plugin": "^5.2.5",
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
@@ -154,7 +153,11 @@
     "modulePaths": [],
     "moduleNameMapper": {
       "^react-native$": "react-native-web",
-      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
+      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy",
+      "^@/src/(.*)$": "<rootDir>/src/$1",
+      "^@combobox/(.*)$": "<rootDir>/src/@combobox/$1",
+      "^@input/(.*)$": "<rootDir>/src/@input/$1",
+      "^@label/(.*)$": "<rootDir>/src/@label/$1"
     },
     "moduleFileExtensions": [
       "web.js",

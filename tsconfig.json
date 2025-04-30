@@ -19,7 +19,8 @@
     "paths": {
       "@/src/*": ["./src/*"],
       "@combobox/*": ["./src/@combobox/*"],
-      "@input/*": ["./src/@input/*"]
+      "@input/*": ["./src/@input/*"],
+      "@label/*": ["./src/@label/*"]
     },
     "declaration": true,
     "declarationDir": "lib",
