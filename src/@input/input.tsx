@@ -1,11 +1,14 @@
 import React, { useState } from "react";
+import clxs from "clsx";
 import "./input.less";
 
 export type IInput = {
   placeholder?: string;
+  inputClassName?: string;
+  size?: "small" | "medium" | "large";
 };
 
-const Input = ({ placeholder }: IInput) => {
+const Input = ({ placeholder, inputClassName, size }: IInput) => {
   const [keySearch, setKeySearch] = useState("");
 
   return (
@@ -15,7 +18,11 @@ const Input = ({ placeholder }: IInput) => {
         placeholder={placeholder ?? "Type something...."}
         value={keySearch}
         onChange={(e) => setKeySearch(e.target.value)}
-        className="base-input"
+        className={clxs(
+          "base-input",
+          inputClassName,
+          `storybook-base-input--${size}`,
+        )}
       />
     </div>
   );
