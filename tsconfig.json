@@ -17,9 +17,9 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@/src/*": ["src/*"],
-      "@combobox/*": ["src/@combobox/*"],
-      "@input/*": ["src/@input/*"]
+      "@/src/*": ["./src/*"],
+      "@combobox/*": ["./src/@combobox/*"],
+      "@input/*": ["./src/@input/*"]
     },
     "declaration": true,
     "declarationDir": "lib",

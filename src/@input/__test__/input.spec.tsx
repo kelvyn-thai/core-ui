@@ -17,9 +17,7 @@ describe("Input", () => {
 
   it("updates input value on change", () => {
     render(<Input />);
-    const input = screen.getByPlaceholderText(
-      "Type something....",
-    ) as HTMLInputElement;
+    const input: HTMLInputElement = screen.getByRole("textbox");
     fireEvent.change(input, { target: { value: "Kelvyn" } });
     expect(input.value).toBe("Kelvyn");
   });
