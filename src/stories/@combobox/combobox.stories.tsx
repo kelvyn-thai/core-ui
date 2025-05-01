@@ -1,9 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Combobox, ComboboxItem, ComboboxProps } from "@combobox/index";
-import "@combobox/combobox.less";
+import { useForm, Controller, useWatch } from "react-hook-form";
 import { useEffect, useMemo, useState } from "react";
-import { generateMockItems } from "./combobox.factories";
 import { unstable_batchedUpdates } from "react-dom";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { generateMockItems } from "./combobox.factories";
+import "@combobox/combobox.less";
+import { Button } from "../Button";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -198,4 +202,135 @@ export const EmptySearchResult: Story = {
     placeholder: "Type zzz to see empty search...",
     isLoading: false,
   } as ComboboxProps,
+};
+
+const comboboxSchema = z.object({
+  fruit: z.object({
+    text: z.string(),
+    value: z.string(),
+    metadata: z.any().optional(),
+  }),
+  search: z.string(),
+});
+
+type ComboboxFormSchema = z.infer<typeof comboboxSchema>;
+
+export const WithReactHookForm: Story = {
+  args: {} as ComboboxProps,
+  render: () => {
+    const { control, setValue, handleSubmit } = useForm<ComboboxFormSchema>({
+      resolver: zodResolver(comboboxSchema),
+      defaultValues: {
+        fruit: { text: "", value: "", metadata: null },
+        search: "",
+      },
+    });
+
+    const [fruit, keySearch] = useWatch({
+      control,
+      name: ["fruit", "search"],
+    });
+
+    const [items] = useState<ComboboxItem[]>(generateMockItems(8));
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const filteredItems = useMemo(
+      () =>
+        items.filter((item) =>
+          item.text.toLowerCase().includes(keySearch.toLowerCase()),
+        ),
+      [items, keySearch],
+    );
+
+    const onSubmit = (data: ComboboxFormSchema) => {
+      alert(`You selected: ${data.fruit.text}`);
+    };
+
+    return (
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Controller
+          name="fruit"
+          control={control}
+          render={({ field: { value, onChange } }) => (
+            <Combobox
+              label="Select Fruit"
+              placeholder="Search fruits..."
+              items={filteredItems}
+              keySearch={keySearch}
+              onChangeKeySearch={(v) => setValue("search", v)}
+              selectedItem={value}
+              onSelectItem={(item) => {
+                onChange(item);
+                setValue("search", item.text);
+                setIsMenuOpen(false);
+              }}
+              isMenuOpen={isMenuOpen}
+              setIsMenuOpen={setIsMenuOpen}
+              isLoading={false}
+            />
+          )}
+        />
+        <Button type="submit" label="Submit" />
+      </form>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "This story demonstrates how to use the `Combobox` component as a controlled input with `react-hook-form` and `zod` schema validation. It integrates a searchable dropdown with form state and validation.",
+      },
+      source: {
+        code: `
+import { useForm, Controller } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const schema = z.object({
+  fruit: z.object({
+    text: z.string(),
+    value: z.string(),
+    metadata: z.any().optional(),
+  }),
+  search: z.string(),
+});
+
+const { control, handleSubmit, setValue } = useForm({
+  resolver: zodResolver(schema),
+  defaultValues: {
+    fruit: { text: "", value: "", metadata: null },
+    search: "",
+  },
+});
+
+<form onSubmit={handleSubmit(onSubmit)}>
+        <Controller
+          name="fruit"
+          control={control}
+          render={({ field: { value, onChange } }) => (
+            <Combobox
+              label="Select Fruit"
+              placeholder="Search fruits..."
+              items={filteredItems}
+              keySearch={keySearch}
+              onChangeKeySearch={(v) => setValue("search", v)}
+              selectedItem={value}
+              onSelectItem={(item) => {
+                onChange(item);
+                setValue("search", item.text);
+                setIsMenuOpen(false);
+              }}
+              isMenuOpen={isMenuOpen}
+              setIsMenuOpen={setIsMenuOpen}
+              isLoading={false}
+            />
+          )}
+        />
+        <Button type="submit" label="Submit" />
+      </form>
+
+        `,
+      },
+    },
+  },
 };

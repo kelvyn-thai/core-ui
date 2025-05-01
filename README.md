@@ -1,46 +1,119 @@
-# Getting Started with Create React App
+# Web UI Core
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## What is this project?
 
-## Available Scripts
+- This project is a Technical Assessment - Senior FE Role ACA.
+- Copyright [Kelvyn Thai](thainguyenhoangphatit@gmail.com)
+- Documents writer: Kelvyn Thai (thainguyenhoangphatit@gmail.com)
+
+## Requirements
+
+# 🧩 Combobox / Autocomplete Component
+
+A fully custom Combobox/Autocomplete component built using **React** and **TypeScript**, matching the provided Figma design.
+
+---
+
+## ✅ Requirements Checklist
+
+### 1. Build a ComboBox / Autocomplete component using React with TypeScript
+
+- [x] Implemented using React
+- [x] Written in TypeScript
+
+---
+
+### 2. Your component MUST match the design UI/UX in the Figma
+
+- [x] Match Figma design:  
+       [https://www.figma.com/design/yj4pYJ1FfoNE9Sc3Hyf5TI/Untitled?node-id=1-2&t=mRvpqyF7VV9oCrzA-4](https://www.figma.com/design/yj4pYJ1FfoNE9Sc3Hyf5TI/Untitled?node-id=1-2&t=mRvpqyF7VV9oCrzA-4)
+
+> 💡 While the visual design is fixed, you have freedom in how you structure the component API.
+
+---
+
+### 3. Build from scratch **without** using UI frameworks or CSS libraries
+
+- [x] No UI frameworks (MUI, AntD, Chakra, etc.)
+- [x] No CSS libraries (TailwindCSS, Bootstrap, etc.)
+- [x] ✅ CSS Modules are acceptable
+
+---
+
+### 4. Your implementation should demonstrate:
+
+- [x] **Component API Design**: Create a well-documented, intuitive API that other developers would enjoy using
+- [x] **Customization**: Enable styling/theming and custom rendering of dropdown items
+- [x] **Form Integration**: Show integration with React Hook Form
+- [x] **Composition Patterns**: Use appropriate composition patterns to enable extensibility
+
+---
+
+### 5. Include component tests
+
+- [x] Demonstrate that functionality works as expected through tests
+
+---
+
+### 6. Document your work in a README.md that explains:
+
+- [x] Your API design philosophy and patterns used
+  - I'm following React core concept, headless UI and composition pattern
+- [x] How developers can customize and extend your component
+  - There are 2 ways:
+    - They can install directly through release tags (Ex: v1.0.1)
+    - They can setup by fork my project and customize / extends by themself
+- [x] Your approach to integration with form libraries
+  - Only write simple core ui component
+  - Supply only about functionality not ui
+  - Fully controlled component React
+- [x] Trade-offs considered during implementation, e.g., constraint and limitations due to the context of the Coding Challenge
+  - You need to setup everything from scratch (testing, bundling, storybook,....)
+- [x] If unconstrained by this challenge, how you would approach building a full component library, e.g., what would be your prefer tech stack?
+  - I'm still stick to my current architecture (webpack, storybook, react core, jest,...)
+  - We can easy create new version (v2) for new core ui components with any library we wish
+  - I suggest we should approach with libraries which only focus to functionality / headless UI
+
+---
+
+### 7. Include a demo page showing different configurations and uses of your component
+
+- [x] Storybook or similar demo page is available
+  - https://kelvyn-thai.github.io/core-ui
+- [x] Includes examples for:
+
+  - Default usage
+  - Custom item rendering
+  - Form integration
+  - Loading and empty states
+
+## How to run this project?
+
+- Run `yarn && yarn storybook`
+
+## Available scripts
 
 In the project directory, you can run:
 
-### `npm start`
+| Command        |          Description           | ENV |
+| :------------- | :----------------------------: | :-: |
+| yarn           |          Install NPM.          | DEV |
+| yarn storybook | Start development by storybook | DEV |
+| yarn test      |           Start test           | DEV |
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Main Stack
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- Structure project followed by modules
+- UI core library: [react](https://react.dev/) + [storybook](https://storybook.js.org/)
+- Cascading Style Sheets:
+  - LESS
+  - CSS
+- Build project by [webpack](https://webpack.js.org)
 
-### `npm test`
+## Developer
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- From source ([src](./src/)) app folder:
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+  - [index](./src/index.ts/): define all component used to build core-ui such as (@combobox, @input, @icon, @label)
+  - [hooks](./src/hooks/): define all hooks used to build application
+  - [stories](./src/stories/): define all stories/documents used to develop application
