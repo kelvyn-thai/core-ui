@@ -1,10 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Combobox, ComboboxItem, ComboboxProps } from "@combobox/index";
 import { useForm, Controller, useWatch } from "react-hook-form";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { unstable_batchedUpdates } from "react-dom";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import debounce from "lodash/debounce";
 import { generateMockItems } from "./combobox.factories";
 import "@combobox/combobox.less";
 import { Button } from "../Button";
@@ -75,8 +76,229 @@ export const Default: Story = {
     );
   },
   args: {
+    label: "Autocomplete",
+    placeholder: "Type to search...",
+  } as ComboboxProps,
+  parameters: {
+    docs: {
+      source: {
+        code: ` const [isLoading, setIsLoading] = useState(true);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [items, setItems] = useState<ComboboxItem[]>([]);
+    const [selectedItem, setSelectedItem] = useState<ComboboxItem | null>(null);
+    const [keySearch, setKeySearch] = useState("");
+
+    const filteredItems = useMemo(
+      () =>
+        items.filter((item) =>
+          item.text.toLowerCase().includes(keySearch.toLowerCase()),
+        ),
+      [items, keySearch],
+    );
+
+    useEffect(() => {
+      const loadData = async () => {
+        await delay(1000);
+        setItems(generateMockItems(10));
+        setIsLoading(false);
+      };
+
+      loadData();
+    }, []);
+
+    const props: ComboboxProps = {
+      label: 'Autocomplete',
+      isLoading,
+      items: filteredItems,
+      selectedItem,
+      keySearch,
+      onChangeKeySearch: (value) => {
+        setKeySearch(value);
+      },
+      onSelectItem: (item) => {
+        setSelectedItem(item);
+        setKeySearch(item.text);
+        setIsMenuOpen(false);
+      },
+      isMenuOpen,
+      setIsMenuOpen,
+    };
+
+    return (
+      <div>
+        <p>Selected: {selectedItem?.text}</p>
+        <Combobox {...props} />
+      </div>
+    );
+`,
+      },
+    },
+  },
+};
+
+export const AsyncSearch: Story = {
+  render: (args) => {
+    const mockItemsRef = useRef(generateMockItems(10));
+    const [isLoading, setIsLoading] = useState(true);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [items, setItems] = useState<ComboboxItem[]>([]);
+    const [selectedItem, setSelectedItem] = useState<ComboboxItem | null>(null);
+    const [keySearch, setKeySearch] = useState("");
+    const [searchItems, setSearchItems] = useState<ComboboxItem[]>([]);
+
+    const dataItems = useMemo(() => {
+      const isSearching = !!keySearch && keySearch.length !== 0;
+
+      if (isSearching) {
+        return searchItems;
+      }
+
+      const totalItems = [...items];
+
+      if (selectedItem !== null) {
+        totalItems.push(selectedItem);
+      }
+
+      return Array.from(
+        new Map([...totalItems].map((item) => [item.value, item])).values(),
+      );
+    }, [items, searchItems, selectedItem, keySearch]);
+
+    const handleSearch = useMemo(() => {
+      return debounce(async (value: string) => {
+        if (value.trim().length === 0) {
+          setItems(mockItemsRef.current);
+          return;
+        }
+        setIsLoading(true);
+        await delay(1000);
+        setSearchItems(Math.random() > 0.5 ? generateMockItems(5) : []); // Mocked API response
+        setIsLoading(false);
+      }, 500);
+    }, []);
+
+    useEffect(() => {
+      const loadData = async () => {
+        await delay(1000);
+        setItems(mockItemsRef.current);
+        setIsLoading(false);
+      };
+
+      loadData();
+    }, []);
+
+    const props: ComboboxProps = {
+      ...args,
+      isLoading,
+      items: [...dataItems],
+      selectedItem,
+      keySearch,
+      onChangeKeySearch: async (value) => {
+        setKeySearch(value);
+        handleSearch(value);
+      },
+      onSelectItem: (item) => {
+        setSelectedItem(item);
+        setKeySearch(item.text);
+        setIsMenuOpen(false);
+      },
+      isMenuOpen,
+      setIsMenuOpen,
+    };
+
+    return (
+      <div>
+        <p>Selected: {selectedItem?.text}</p>
+        <Combobox {...props} />
+      </div>
+    );
+  },
+  args: {
     isLoading: false,
   } as ComboboxProps,
+  parameters: {
+    docs: {
+      source: {
+        code: `   
+    const mockItemsRef = useRef(generateMockItems(10));
+    const [isLoading, setIsLoading] = useState(true);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [items, setItems] = useState<ComboboxItem[]>([]);
+    const [selectedItem, setSelectedItem] = useState<ComboboxItem | null>(null);
+    const [keySearch, setKeySearch] = useState("");
+    const [searchItems, setSearchItems] = useState<ComboboxItem[]>([]);
+
+    const dataItems = useMemo(() => {
+      const isSearching = !!keySearch && keySearch.length !== 0;
+
+      if (isSearching) {
+        return searchItems;
+      }
+
+      const totalItems = [...items];
+
+      if (selectedItem !== null) {
+        totalItems.push(selectedItem);
+      }
+
+      return Array.from(
+        new Map([...totalItems].map((item) => [item.value, item])).values(),
+      );
+    }, [items, searchItems, selectedItem, keySearch]);
+
+    const handleSearch = useMemo(() => {
+      return debounce(async (value: string) => {
+        if (value.trim().length === 0) {
+          setItems(mockItemsRef.current);
+          return;
+        }
+        setIsLoading(true);
+        await delay(1000);
+        setSearchItems(Math.random() > 0.5 ? generateMockItems(5) : []); // Mocked API response
+        setIsLoading(false);
+      }, 500);
+    }, []);
+
+    useEffect(() => {
+      const loadData = async () => {
+        await delay(1000);
+        setItems(mockItemsRef.current);
+        setIsLoading(false);
+      };
+
+      loadData();
+    }, []);
+
+    const props: ComboboxProps = {
+      ...args,
+      isLoading,
+      items: [...dataItems],
+      selectedItem,
+      keySearch,
+      onChangeKeySearch: async (value) => {
+        setKeySearch(value);
+        handleSearch(value);
+      },
+      onSelectItem: (item) => {
+        setSelectedItem(item);
+        setKeySearch(item.text);
+        setIsMenuOpen(false);
+      },
+      isMenuOpen,
+      setIsMenuOpen,
+    };
+
+    return (
+      <div>
+        <p>Selected: {selectedItem?.text}</p>
+        <Combobox {...props} />
+      </div>
+    );
+  },
+`,
+      },
+    },
+  },
 };
 
 export const WithRenderItem: Story = {
@@ -163,7 +385,7 @@ export const EmptySearchResult: Story = {
   render: (args) => {
     const [isMenuOpen, setIsMenuOpen] = useState(true);
     const [items] = useState<ComboboxItem[]>(generateMockItems(5));
-    const [keySearch, setKeySearch] = useState("zzz");
+    const [keySearch, setKeySearch] = useState("zzzzzz");
     const [selectedItem, setSelectedItem] = useState<ComboboxItem>({
       text: "None",
       value: "none",
@@ -202,6 +424,48 @@ export const EmptySearchResult: Story = {
     placeholder: "Type zzz to see empty search...",
     isLoading: false,
   } as ComboboxProps,
+  parameters: {
+    docs: {
+      source: {
+        code: `
+const [isMenuOpen, setIsMenuOpen] = useState(true);
+    const [items] = useState<ComboboxItem[]>(generateMockItems(5));
+    const [keySearch, setKeySearch] = useState("zzzzzz");
+    const [selectedItem, setSelectedItem] = useState<ComboboxItem>({
+      text: "None",
+      value: "none",
+      metadata: {},
+    });
+
+    const filteredItems = useMemo(
+      () =>
+        items.filter((item) =>
+          item.text.toLowerCase().includes(keySearch.toLowerCase()),
+        ),
+      [items, keySearch],
+    );
+
+    const props: ComboboxProps = {
+      ...args,
+      items: filteredItems,
+      selectedItem,
+      keySearch,
+      onChangeKeySearch: setKeySearch,
+      onSelectItem: (item) => {
+        unstable_batchedUpdates(() => {
+          setSelectedItem(item);
+          setKeySearch(item.text);
+          setIsMenuOpen(false);
+        });
+      },
+      isMenuOpen,
+      setIsMenuOpen,
+    };
+
+    return <Combobox {...props} />;`,
+      },
+    },
+  },
 };
 
 const comboboxSchema = z.object({
@@ -303,7 +567,36 @@ const { control, handleSubmit, setValue } = useForm({
   },
 });
 
-<form onSubmit={handleSubmit(onSubmit)}>
+  const { control, setValue, handleSubmit } = useForm<ComboboxFormSchema>({
+      resolver: zodResolver(comboboxSchema),
+      defaultValues: {
+        fruit: { text: "", value: "", metadata: null },
+        search: "",
+      },
+    });
+
+    const [fruit, keySearch] = useWatch({
+      control,
+      name: ["fruit", "search"],
+    });
+
+    const [items] = useState<ComboboxItem[]>(generateMockItems(8));
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const filteredItems = useMemo(
+      () =>
+        items.filter((item) =>
+          item.text.toLowerCase().includes(keySearch.toLowerCase()),
+        ),
+      [items, keySearch],
+    );
+
+    const onSubmit = (data: ComboboxFormSchema) => {
+      alert('...');
+    };
+
+    return (
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Controller
           name="fruit"
           control={control}
@@ -328,7 +621,7 @@ const { control, handleSubmit, setValue } = useForm({
         />
         <Button type="submit" label="Submit" />
       </form>
-
+    );
         `,
       },
     },

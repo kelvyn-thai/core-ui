@@ -26,7 +26,7 @@ A fully custom Combobox/Autocomplete component built using **React** and **TypeS
 ### 2. Your component MUST match the design UI/UX in the Figma
 
 - [x] Match Figma design:  
-       [https://www.figma.com/design/yj4pYJ1FfoNE9Sc3Hyf5TI/Untitled?node-id=1-2&t=mRvpqyF7VV9oCrzA-4](https://www.figma.com/design/yj4pYJ1FfoNE9Sc3Hyf5TI/Untitled?node-id=1-2&t=mRvpqyF7VV9oCrzA-4)
+       [Design](https://www.figma.com/design/yj4pYJ1FfoNE9Sc3Hyf5Tl/Untitled?node-id=1-2&t=93hCB1UbHbIHlOiq-0)
 
 > 💡 While the visual design is fixed, you have freedom in how you structure the component API.
 
@@ -61,7 +61,7 @@ A fully custom Combobox/Autocomplete component built using **React** and **TypeS
   - I'm following React core concept, headless UI and composition pattern
 - [x] How developers can customize and extend your component
   - There are 2 ways:
-    - They can install directly through release tags (Ex: v1.0.1)
+    - They can install directly through release tags (Ex: v1.0.1) (View ### Developer part))
     - They can setup by fork my project and customize / extends by themself
 - [x] Your approach to integration with form libraries
   - Only write simple core ui component
@@ -115,5 +115,5 @@ In the project directory, you can run:
 - From source ([src](./src/)) app folder:
 
   - [index](./src/index.ts/): define all component used to build core-ui such as (@combobox, @input, @icon, @label)
-  - [hooks](./src/hooks/): define all hooks used to build application
-  - [stories](./src/stories/): define all stories/documents used to develop application
+  - [hooks](./src/hooks/index): define all hooks used to build application
+  - [stories](./src/stories/@combobox/combobox.stories.tsx): define all stories/documents used to develop application
