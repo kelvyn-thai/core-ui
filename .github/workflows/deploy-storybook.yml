@@ -1,4 +1,4 @@
-name: Deploy Storybook to GitHub Pages #4
+name: Deploy Storybook to GitHub Pages
 
 on:
   push:
@@ -12,15 +12,30 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: npm ci
-      - run: npm run build-storybook
-      - uses: actions/configure-pages@v4
-      - uses: actions/upload-pages-artifact@v3
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build Storybook
+        run: yarn build-storybook
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload Storybook to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
         with:
           path: storybook-static
-      - uses: actions/deploy-pages@v4
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
