@@ -21,7 +21,8 @@
       "@combobox/*": ["./src/@combobox/*"],
       "@input/*": ["./src/@input/*"],
       "@label/*": ["./src/@label/*"],
-      "@icon/*": ["./src/@icon/*"]
+      "@icon/*": ["./src/@icon/*"],
+      "@hook/*": ["./src/@hook/*"]
     },
     "declaration": true,
     "declarationDir": "lib",

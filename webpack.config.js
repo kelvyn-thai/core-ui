@@ -4,6 +4,8 @@ const BundleAnalyzerPlugin =
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
+
 const {
   isEnvDevelopment,
   isEnvProduction,
@@ -39,26 +41,35 @@ const paths = {
 
 const resolveEntry = (relativePath) => path.resolve(paths.appSrc, relativePath);
 
+const webpackEntry = {
+  index: {
+    import: resolveEntry("index.ts"),
+  },
+  "@input": {
+    import: resolveEntry("@input/index.ts"),
+  },
+  "@label": {
+    import: resolveEntry("@label/index.ts"),
+  },
+  "@icon": {
+    import: resolveEntry("@icon/index.ts"),
+  },
+  "@hook": {
+    import: resolveEntry("@hook/index.ts"),
+  },
+  "@combobox": {
+    import: resolveEntry("@combobox/index.ts"),
+  },
+};
+
+console.debug({
+  webpackEntry,
+});
+
 // console.log(entryObj);
 /** @type { import('webpack').Configuration } */
 module.exports = {
-  entry: {
-    index: {
-      import: resolveEntry("index.ts"),
-    },
-    "@combobox": {
-      import: resolveEntry("@combobox/index.ts"),
-    },
-    "@input": {
-      import: resolveEntry("@input/index.ts"),
-    },
-    "@label": {
-      import: resolveEntry("@label/index.ts"),
-    },
-    "@icon": {
-      import: resolveEntry("@icon/index.ts"),
-    },
-  },
+  entry: webpackEntry,
   output: {
     filename: (pathData) => {
       return pathData.chunk.name === "index" ? "[name].js" : "[name]/index.js";
@@ -145,6 +156,9 @@ module.exports = {
         }),
         shouldBundleAnalyzer ? new BundleAnalyzerPlugin() : undefined,
         shouldGenerateHTML ? new HtmlWebpackPlugin() : undefined,
+        new TsconfigPathsPlugin({
+          configFile: resolveApp("./tsconfig.json"),
+        }),
       ].filter(Boolean)
     : [],
   externals: {
