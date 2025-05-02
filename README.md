@@ -71,9 +71,13 @@ A fully custom Combobox/Autocomplete component built using **React** and **TypeS
 - [x] Trade-offs considered during implementation, e.g., constraint and limitations due to the context of the Coding Challenge
   - You need to setup everything from scratch (testing, bundling, storybook,....)
 - [x] If unconstrained by this challenge, how you would approach building a full component library, e.g., what would be your prefer tech stack?
-  - I'm still stick to my current architecture (webpack, storybook, react core, jest,...)
-  - We can easy create new version (v2) for new core ui components with any library we wish
-  - I suggest we should approach with libraries which only focus to functionality / headless UI
+  - In essence, I assume that there are some keywords to build a core-ui:
+       - Bundling (webpack, roll-up, vite...)
+       - Testing (jest, enzyme, cypress,..)
+       - Headless UI + Focus to functionality not UI 
+       - Documents (Storybook,....)
+       - Fully controlled React component
+       - Backward compatible 
 
 ---
 
