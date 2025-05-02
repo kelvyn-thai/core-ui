@@ -7,6 +7,107 @@
 - Copyright [Kelvyn Thai](thainguyenhoangphatit@gmail.com)
 - Documents writer: Kelvyn Thai (thainguyenhoangphatit@gmail.com)
 
+## How to use it? 
+
+#### Install package:
+```
+yarn add git+https://github.com/kelvyn-thai/core-ui.git#v1.0.3
+```
+
+#### Declare abs path:
+```
+//tsconfig.json
+"paths": {
+ ...,
+ "@core-ui/*": ["./node_modules/core-ui/lib/*"]
+}
+```
+
+#### Optional next JS
+```
+//next.config.ts
+webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.alias["@core-ui"] = path.resolve(
+        __dirname,
+        "node_modules/core-ui/lib",
+      );
+    }
+    return config;
+}
+```
+
+#### Usaged
+```
+//page.tsx
+"use client";
+
+import { Combobox, ComboboxItem } from "@core-ui/@combobox";
+import "@core-ui/@combobox/index.css";
+import { randProductName, randUuid, randNumber } from "@ngneat/falso";
+import { useState, useEffect, useMemo } from "react";
+
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const generateMockItems = (count: number = 10): ComboboxItem[] => {
+  return Array.from({ length: count }).map(() => ({
+    text: randProductName(),
+    value: randUuid(),
+    metadata: {
+      price: randNumber({ min: 10, max: 200, precision: 0.01 }).toFixed(2),
+    },
+  }));
+};
+
+const CoreUI = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [items, setItems] = useState<ComboboxItem[]>([]);
+  const [selectedItem, setSelectedItem] = useState<ComboboxItem | null>(null);
+  const [keySearch, onChangeKeySearch] = useState("");
+
+  const filteredItems = useMemo(
+    () =>
+      items.filter((item) =>
+        item.text.toLowerCase().includes(keySearch.toLowerCase()),
+      ),
+    [items, keySearch],
+  );
+
+  useEffect(() => {
+    const loadData = async () => {
+      await delay(1000);
+      setItems(generateMockItems(10));
+      setIsLoading(false);
+    };
+
+    loadData();
+  }, []);
+  return (
+    <section className="h-screen p-8">
+      <Combobox
+        label={"Autocomplete"}
+        items={filteredItems}
+        onSelectItem={(item) => {
+          setSelectedItem(item);
+          setIsMenuOpen(false);
+          onChangeKeySearch(item.text);
+        }}
+        selectedItem={selectedItem}
+        keySearch={keySearch}
+        onChangeKeySearch={onChangeKeySearch}
+        isLoading={isLoading}
+        isMenuOpen={isMenuOpen}
+        setIsMenuOpen={setIsMenuOpen}
+        className="w-90"
+      />
+    </section>
+  );
+};
+
+export default CoreUI;
+```
+
 ## Requirements
 
 # Combobox / Autocomplete Component
