@@ -9,13 +9,13 @@
 
 ## Requirements
 
-# 🧩 Combobox / Autocomplete Component
+# Combobox / Autocomplete Component
 
 A fully custom Combobox/Autocomplete component built using **React** and **TypeScript**, matching the provided Figma design.
 
 ---
 
-## ✅ Requirements Checklist
+## Requirements Checklist
 
 ### 1. Build a ComboBox / Autocomplete component using React with TypeScript
 
@@ -37,7 +37,7 @@ A fully custom Combobox/Autocomplete component built using **React** and **TypeS
 
 - [x] No UI frameworks (MUI, AntD, Chakra, etc.)
 - [x] No CSS libraries (TailwindCSS, Bootstrap, etc.)
-- [x] ✅ CSS Modules are acceptable
+- [x] CSS Modules are acceptable
 
 ---
 
