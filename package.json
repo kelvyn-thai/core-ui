@@ -165,7 +165,8 @@
       "^@input/(.*)$": "<rootDir>/src/@input/$1",
       "^@label/(.*)$": "<rootDir>/src/@label/$1",
       "^@icon/(.*)$": "<rootDir>/src/@icon/$1",
-      "^@hook/(.*)$": "<rootDir>/src/@hook/$1"
+      "^@hook/(.*)$": "<rootDir>/src/@hook/$1",
+      "^@button/(.*)$": "<rootDir>/src/@button/$1"
     },
     "moduleFileExtensions": [
       "web.js",

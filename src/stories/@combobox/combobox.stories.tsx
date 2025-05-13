@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import debounce from "lodash/debounce";
 import { generateMockItems } from "./combobox.factories";
 import "@combobox/combobox.less";
-import { Button } from "../Button";
+import { Button } from "@button/index";
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -534,7 +534,7 @@ export const WithReactHookForm: Story = {
             />
           )}
         />
-        <Button type="submit" label="Submit" />
+        <Button type="submit">Submit</Button>
       </form>
     );
   },

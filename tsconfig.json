@@ -22,7 +22,8 @@
       "@input/*": ["./src/@input/*"],
       "@label/*": ["./src/@label/*"],
       "@icon/*": ["./src/@icon/*"],
-      "@hook/*": ["./src/@hook/*"]
+      "@hook/*": ["./src/@hook/*"],
+      "@button/*": ["./src/@button/*"]
     },
     "declaration": true,
     "declarationDir": "lib",

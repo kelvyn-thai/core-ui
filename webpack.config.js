@@ -60,6 +60,9 @@ const webpackEntry = {
   "@combobox": {
     import: resolveEntry("@combobox/index.ts"),
   },
+  "@button": {
+    import: resolveEntry("@button/index.ts"),
+  },
 };
 
 console.debug({
