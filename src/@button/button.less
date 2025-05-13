@@ -1,4 +1,5 @@
 .base-btn {
+  font-family: Arial, Helvetica, sans-serif;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -6,7 +7,7 @@
   white-space: nowrap;
   border-radius: 4px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 400;
   transition: background-color 0.2s ease;
   cursor: pointer;
   border: none;
@@ -14,9 +15,12 @@
   &--default {
     background: #1d4ed8;
     color: #ffffff;
+    height: 40px;
+    padding: 0 1rem;
 
     &:hover {
       background: #1e40af;
+      font-weight: 600;
     }
   }
 
@@ -65,11 +69,6 @@
     &:hover {
       opacity: 0.8;
     }
-  }
-
-  &--default {
-    height: 36px;
-    padding: 0 1rem;
   }
 
   &--sm {
