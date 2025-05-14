@@ -69,6 +69,9 @@ const webpackEntry = {
   "@utils": {
     import: resolveEntry("@utils/index.ts"),
   },
+  "@icons": {
+    import: resolveEntry("@icons/index.ts"),
+  },
 };
 
 console.debug({
