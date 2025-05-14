@@ -63,6 +63,12 @@ const webpackEntry = {
   "@button": {
     import: resolveEntry("@button/index.ts"),
   },
+  "@zustand": {
+    import: resolveEntry("@zustand/index.ts"),
+  },
+  "@utils": {
+    import: resolveEntry("@utils/index.ts"),
+  },
 };
 
 console.debug({

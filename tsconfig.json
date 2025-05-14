@@ -23,7 +23,9 @@
       "@label/*": ["./src/@label/*"],
       "@icon/*": ["./src/@icon/*"],
       "@hook/*": ["./src/@hook/*"],
-      "@button/*": ["./src/@button/*"]
+      "@button/*": ["./src/@button/*"],
+      "@zustand/*": ["./src/@zustand/*"],
+      "@utils/*": ["./src/@utils/*"]
     },
     "declaration": true,
     "declarationDir": "lib",

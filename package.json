@@ -1,6 +1,6 @@
 {
   "name": "core-ui",
-  "version": "1.0.5",
+  "version": "1.0.7",
   "description": "Core UI components library",
   "main": "lib/index.js",
   "types": "./lib/index.d.ts",
@@ -25,13 +25,15 @@
     "clsx": "^2.1.1",
     "react": "^19",
     "react-dom": "^19",
-    "react-refresh": "^0.11.0"
+    "react-refresh": "^0.11.0",
+    "zustand": "^5.0.4"
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",
     "@hookform/resolvers": "^5.0.1",
     "@ngneat/falso": "^7.3.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
+    "@redux-devtools/extension": "^3.3.0",
     "@storybook/addon-essentials": "^8.6.12",
     "@storybook/addon-interactions": "^8.6.12",
     "@storybook/addon-onboarding": "^8.6.12",
@@ -166,7 +168,9 @@
       "^@label/(.*)$": "<rootDir>/src/@label/$1",
       "^@icon/(.*)$": "<rootDir>/src/@icon/$1",
       "^@hook/(.*)$": "<rootDir>/src/@hook/$1",
-      "^@button/(.*)$": "<rootDir>/src/@button/$1"
+      "^@button/(.*)$": "<rootDir>/src/@button/$1",
+      "^@zustand/(.*)$": "<rootDir>/src/@zustand/$1",
+      "^@utils/(.*)$": "<rootDir>/src/@utils/$1"
     },
     "moduleFileExtensions": [
       "web.js",
