@@ -1,6 +1,6 @@
 {
   "name": "core-ui",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Core UI components library",
   "main": "lib/index.js",
   "types": "./lib/index.d.ts",
