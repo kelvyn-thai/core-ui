@@ -3,7 +3,7 @@ import {
   Icon,
   SearchIcon as BaseSearchIcon,
   TrashIcon as BaseTrashIcon,
-} from "@icon/index";
+} from "@icons/index";
 
 const meta = {
   title: "Example/Icon",

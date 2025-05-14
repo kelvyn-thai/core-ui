@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, within } from "@storybook/test";
 import { Input } from "@input/index";
-import { Icon, SearchIcon } from "@icon/index";
+import { Icon, SearchIcon } from "@icons/index";
 
 import "@input/input.less";
 import "./input.less";

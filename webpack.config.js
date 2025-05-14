@@ -51,8 +51,8 @@ const webpackEntry = {
   "@label": {
     import: resolveEntry("@label/index.ts"),
   },
-  "@icon": {
-    import: resolveEntry("@icon/index.ts"),
+  "@icons": {
+    import: resolveEntry("@icons/index.ts"),
   },
   "@hook": {
     import: resolveEntry("@hook/index.ts"),
@@ -68,9 +68,6 @@ const webpackEntry = {
   },
   "@utils": {
     import: resolveEntry("@utils/index.ts"),
-  },
-  "@icons": {
-    import: resolveEntry("@icons/index.ts"),
   },
 };
 

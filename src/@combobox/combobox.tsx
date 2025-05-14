@@ -3,7 +3,7 @@ import clsx from "clsx";
 
 import { Label } from "../@label";
 import { Input } from "../@input";
-import { Icon, SearchIcon } from "../@icon";
+import { Icon, SearchIcon } from "../@icons";
 import { useClickOutside } from "../@hook";
 
 import "./combobox.less";
