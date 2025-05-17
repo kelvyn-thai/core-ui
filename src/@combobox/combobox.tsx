@@ -112,11 +112,13 @@ const Combobox = ({
 
   return (
     <div ref={wrapperRef} className={clsx("combobox-wrapper", className)}>
-      <Label
-        content={label}
-        className="base-combobox-label"
-        data-testid="label"
-      />
+      {label && (
+        <Label
+          content={label}
+          className="base-combobox-label"
+          data-testid="label"
+        />
+      )}
       <div className={clsx("base-wrapper-input")}>
         <Input
           type="text"
