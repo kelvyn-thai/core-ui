@@ -16,7 +16,7 @@ export type ComboboxItem = {
 
 export type ComboboxProps = {
   placeholder?: string;
-  label: string;
+  label?: string;
   items: ComboboxItem[];
   onSelectItem: (item: ComboboxItem) => void;
   selectedItem: ComboboxItem | null;
@@ -31,7 +31,7 @@ export type ComboboxProps = {
 
 const Combobox = ({
   placeholder = "Type to search",
-  label = "Autocomplete",
+  label,
   keySearch,
   onChangeKeySearch,
   items,
