@@ -3,6 +3,7 @@ import {
   Icon,
   SearchIcon as BaseSearchIcon,
   TrashIcon as BaseTrashIcon,
+  MapPinIcon as BaseMapPinIcon,
 } from "@icons/index";
 
 const meta = {
@@ -48,5 +49,11 @@ export const SearchIcon: Story = {
 export const TrashIcon: Story = {
   args: {
     children: <BaseTrashIcon />,
+  },
+};
+
+export const MapPinIcon: Story = {
+  args: {
+    children: <BaseMapPinIcon />,
   },
 };
