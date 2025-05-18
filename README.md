@@ -2,7 +2,7 @@
 
 ## What is this project?
 
-- This project is a Technical Assessment - Senior FE Role ACA.
+- This project is Core UI for FE services
 - Production: https://kelvyn-thai.github.io/core-ui
 - Copyright [Kelvyn Thai](thainguyenhoangphatit@gmail.com)
 - Documents writer: Kelvyn Thai (thainguyenhoangphatit@gmail.com)
