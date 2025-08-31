@@ -1,8 +1,8 @@
-import { create, StateCreator, StoreApi, UseBoundStore, Mutate } from 'zustand';
+import { create, StateCreator, StoreApi, UseBoundStore } from 'zustand';
 import { DevtoolsOptions, PersistOptions, devtools, persist } from 'zustand/middleware';
 
 export const createStore = <T>(
-  initializer: StateCreator<T, [], any[], T>,
+  initializer: StateCreator<T, [], [], T>,
   {
     devtoolsOptions,
     persistOptions,
@@ -10,8 +10,9 @@ export const createStore = <T>(
     devtoolsOptions?: DevtoolsOptions;
     persistOptions?: PersistOptions<T, Partial<T>>;
   } = {},
-): [UseBoundStore<Mutate<StoreApi<T>, any[]>>] => {
-  let storeInitializer = initializer;
+): [UseBoundStore<StoreApi<T>>] => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let storeInitializer: any = initializer;
 
   if (persistOptions?.name) {
     storeInitializer = persist(initializer, { ...persistOptions });

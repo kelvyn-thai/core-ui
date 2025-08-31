@@ -1,6 +1,6 @@
 import React from 'react';
 import clxs from 'clsx';
-import './input.less';
+import './input.css';
 
 export type InputProps = {
   className?: string;

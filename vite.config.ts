@@ -6,6 +6,7 @@ import analyzer from 'vite-bundle-analyzer';
 import checker from 'vite-plugin-checker';
 import browserslist from 'browserslist';
 import { browserslistToTargets } from 'lightningcss';
+import tailwindcss from '@tailwindcss/vite';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -36,6 +37,7 @@ export default defineConfig(({ mode }) => {
       exclude: ['**/*.stories.*', '**/*.spec.*', '**/*.test.*'],
       outDir: 'lib',
     }),
+    tailwindcss(),
   ];
 
   if (isViteBundleAnalyzer) {

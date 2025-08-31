@@ -1,15 +1,15 @@
 import React from 'react';
 import clsx from 'clsx';
-import './button.less';
+import './button.css';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
-  size?: 'default' | 'sm' | 'lg';
+  variant?: 'primary' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
+  size?: 'small' | 'medium' | 'large';
 }
 
-const Button: React.FC<ButtonProps> = ({ children, className, variant = 'default', size = 'default', ...rest }) => {
+const Button: React.FC<ButtonProps> = ({ children, className, variant = 'primary', size = 'medium', ...rest }) => {
   return (
-    <button className={clsx('base-btn', `base-btn--${variant}`, `base-btn--${size}`, className)} {...rest}>
+    <button className={clsx('base-button', `base-button--${variant}`, `base-button--${size}`, className)} {...rest}>
       {children}
     </button>
   );
