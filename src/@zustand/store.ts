@@ -1,10 +1,5 @@
-import { create, StateCreator, StoreApi, UseBoundStore, Mutate } from "zustand";
-import {
-  DevtoolsOptions,
-  PersistOptions,
-  devtools,
-  persist,
-} from "zustand/middleware";
+import { create, StateCreator, StoreApi, UseBoundStore, Mutate } from 'zustand';
+import { DevtoolsOptions, PersistOptions, devtools, persist } from 'zustand/middleware';
 
 export const createStore = <T>(
   initializer: StateCreator<T, [], any[], T>,

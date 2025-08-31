@@ -1,20 +1,15 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import {
-  Icon,
-  SearchIcon as BaseSearchIcon,
-  TrashIcon as BaseTrashIcon,
-  MapPinIcon as BaseMapPinIcon,
-} from "@icons/index";
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { Icon, SearchIcon as BaseSearchIcon, TrashIcon as BaseTrashIcon, MapPinIcon as BaseMapPinIcon } from '@icons';
 
 const meta = {
-  title: "Example/Icon",
+  title: 'Example/Icon',
   component: Icon,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
-    layout: "centered",
+    layout: 'centered',
   },
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
-  tags: ["autodocs"],
+  tags: ['autodocs'],
 } satisfies Meta<typeof Icon>;
 
 export default meta;
@@ -29,14 +24,14 @@ export const Default: Story = {
 export const SmallIcon: Story = {
   args: {
     ...Default.args,
-    size: "sm",
+    size: 'sm',
   },
 };
 
 export const LargeIcon: Story = {
   args: {
     ...Default.args,
-    size: "lg",
+    size: 'lg',
   },
 };
 

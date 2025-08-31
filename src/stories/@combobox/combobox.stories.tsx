@@ -1,24 +1,24 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Combobox, ComboboxItem, ComboboxProps } from "@combobox/index";
-import { useForm, Controller, useWatch } from "react-hook-form";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { unstable_batchedUpdates } from "react-dom";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import debounce from "lodash/debounce";
-import { generateMockItems } from "./combobox.factories";
-import "@combobox/combobox.less";
-import { Button } from "@button/index";
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { Combobox, ComboboxItem, ComboboxProps } from '@combobox';
+import { useForm, Controller, useWatch } from 'react-hook-form';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { unstable_batchedUpdates } from 'react-dom';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import debounce from 'lodash/debounce';
+import { generateMockItems } from './combobox.factories';
+import '@combobox/combobox.less';
+import { Button } from '@button';
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const meta = {
-  title: "Example/Combobox",
+  title: 'Example/Combobox',
   component: Combobox,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
-  tags: ["autodocs"],
+  tags: ['autodocs'],
 } satisfies Meta<typeof Combobox>;
 
 export default meta;
@@ -30,13 +30,10 @@ export const Default: Story = {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [items, setItems] = useState<ComboboxItem[]>([]);
     const [selectedItem, setSelectedItem] = useState<ComboboxItem | null>(null);
-    const [keySearch, setKeySearch] = useState("");
+    const [keySearch, setKeySearch] = useState('');
 
     const filteredItems = useMemo(
-      () =>
-        items.filter((item) =>
-          item.text.toLowerCase().includes(keySearch.toLowerCase()),
-        ),
+      () => items.filter((item) => item.text.toLowerCase().includes(keySearch.toLowerCase())),
       [items, keySearch],
     );
 
@@ -76,8 +73,8 @@ export const Default: Story = {
     );
   },
   args: {
-    label: "Autocomplete",
-    placeholder: "Type to search...",
+    label: 'Autocomplete',
+    placeholder: 'Type to search...',
   } as ComboboxProps,
   parameters: {
     docs: {
@@ -143,7 +140,7 @@ export const AsyncSearch: Story = {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [items, setItems] = useState<ComboboxItem[]>([]);
     const [selectedItem, setSelectedItem] = useState<ComboboxItem | null>(null);
-    const [keySearch, setKeySearch] = useState("");
+    const [keySearch, setKeySearch] = useState('');
     const [searchItems, setSearchItems] = useState<ComboboxItem[]>([]);
 
     const dataItems = useMemo(() => {
@@ -159,9 +156,7 @@ export const AsyncSearch: Story = {
         totalItems.push(selectedItem);
       }
 
-      return Array.from(
-        new Map([...totalItems].map((item) => [item.value, item])).values(),
-      );
+      return Array.from(new Map([...totalItems].map((item) => [item.value, item])).values());
     }, [items, searchItems, selectedItem, keySearch]);
 
     const handleSearch = useMemo(() => {
@@ -304,8 +299,8 @@ export const AsyncSearch: Story = {
 export const WithRenderItem: Story = {
   render: (args) => <Combobox {...args} />,
   args: {
-    label: "Customize render item",
-    placeholder: "Search...",
+    label: 'Customize render item',
+    placeholder: 'Search...',
     isLoading: false,
     isMenuOpen: true,
     items: generateMockItems(5),
@@ -316,7 +311,7 @@ export const WithRenderItem: Story = {
     ),
     setIsMenuOpen: () => {},
     selectedItem: null,
-    keySearch: "",
+    keySearch: '',
     onChangeKeySearch: () => {},
     onSelectItem: () => {},
   },
@@ -354,8 +349,8 @@ export const Loading: Story = {
     return <Combobox {...args} />;
   },
   args: {
-    label: "Loading Combo",
-    placeholder: "Search...",
+    label: 'Loading Combo',
+    placeholder: 'Search...',
     isLoading: true,
     isMenuOpen: true,
     items: [] as ComboboxItem[],
@@ -370,8 +365,8 @@ export const EmptyData: Story = {
     return <Combobox {...args} />;
   },
   args: {
-    label: "Empty data",
-    placeholder: "Search...",
+    label: 'Empty data',
+    placeholder: 'Search...',
     isLoading: false,
     items: [] as ComboboxItem[],
     isMenuOpen: true,
@@ -385,18 +380,15 @@ export const EmptySearchResult: Story = {
   render: (args) => {
     const [isMenuOpen, setIsMenuOpen] = useState(true);
     const [items] = useState<ComboboxItem[]>(generateMockItems(5));
-    const [keySearch, setKeySearch] = useState("zzzzzz");
+    const [keySearch, setKeySearch] = useState('zzzzzz');
     const [selectedItem, setSelectedItem] = useState<ComboboxItem>({
-      text: "None",
-      value: "none",
+      text: 'None',
+      value: 'none',
       metadata: {},
     });
 
     const filteredItems = useMemo(
-      () =>
-        items.filter((item) =>
-          item.text.toLowerCase().includes(keySearch.toLowerCase()),
-        ),
+      () => items.filter((item) => item.text.toLowerCase().includes(keySearch.toLowerCase())),
       [items, keySearch],
     );
 
@@ -420,8 +412,8 @@ export const EmptySearchResult: Story = {
     return <Combobox {...props} />;
   },
   args: {
-    label: "Empty Search Result",
-    placeholder: "Type zzz to see empty search...",
+    label: 'Empty Search Result',
+    placeholder: 'Type zzz to see empty search...',
     isLoading: false,
   } as ComboboxProps,
   parameters: {
@@ -485,24 +477,21 @@ export const WithReactHookForm: Story = {
     const { control, setValue, handleSubmit } = useForm<ComboboxFormSchema>({
       resolver: zodResolver(comboboxSchema),
       defaultValues: {
-        fruit: { text: "", value: "", metadata: null },
-        search: "",
+        fruit: { text: '', value: '', metadata: null },
+        search: '',
       },
     });
 
     const [fruit, keySearch] = useWatch({
       control,
-      name: ["fruit", "search"],
+      name: ['fruit', 'search'],
     });
 
     const [items] = useState<ComboboxItem[]>(generateMockItems(8));
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const filteredItems = useMemo(
-      () =>
-        items.filter((item) =>
-          item.text.toLowerCase().includes(keySearch.toLowerCase()),
-        ),
+      () => items.filter((item) => item.text.toLowerCase().includes(keySearch.toLowerCase())),
       [items, keySearch],
     );
 
@@ -521,11 +510,11 @@ export const WithReactHookForm: Story = {
               placeholder="Search fruits..."
               items={filteredItems}
               keySearch={keySearch}
-              onChangeKeySearch={(v) => setValue("search", v)}
+              onChangeKeySearch={(v) => setValue('search', v)}
               selectedItem={value}
               onSelectItem={(item) => {
                 onChange(item);
-                setValue("search", item.text);
+                setValue('search', item.text);
                 setIsMenuOpen(false);
               }}
               isMenuOpen={isMenuOpen}
@@ -542,7 +531,7 @@ export const WithReactHookForm: Story = {
     docs: {
       description: {
         story:
-          "This story demonstrates how to use the `Combobox` component as a controlled input with `react-hook-form` and `zod` schema validation. It integrates a searchable dropdown with form state and validation.",
+          'This story demonstrates how to use the `Combobox` component as a controlled input with `react-hook-form` and `zod` schema validation. It integrates a searchable dropdown with form state and validation.',
       },
       source: {
         code: `
