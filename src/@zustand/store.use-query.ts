@@ -1,7 +1,7 @@
-import { StoreApi, UseBoundStore } from "zustand";
-import { createStore } from "./store";
+import { StoreApi, UseBoundStore } from 'zustand';
+import { createStore } from './store';
 
-export interface QueryStore<T extends any> {
+export interface QueryStore<T> {
   isPending: boolean;
   error: string | null;
   data: T | undefined;
@@ -17,9 +17,7 @@ export interface QueryStore<T extends any> {
   }) => Promise<T | undefined>;
 }
 
-export const createQueryStore = <T>(): UseBoundStore<
-  StoreApi<QueryStore<T>>
-> => {
+export const createQueryStore = <T>(): UseBoundStore<StoreApi<QueryStore<T>>> => {
   const [useStore] = createStore<QueryStore<T>>((set, get) => ({
     isPending: false,
     error: null,
@@ -46,7 +44,7 @@ export const createQueryStore = <T>(): UseBoundStore<
 
         setData(response);
 
-        if (typeof queryFnSuccess === "function") {
+        if (typeof queryFnSuccess === 'function') {
           queryFnSuccess(response);
         }
       } catch (error) {
@@ -56,7 +54,7 @@ export const createQueryStore = <T>(): UseBoundStore<
           setError(JSON.stringify(error));
         }
 
-        if (typeof queryFnFail === "function") {
+        if (typeof queryFnFail === 'function') {
           queryFnFail(error);
         }
       } finally {

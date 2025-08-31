@@ -1,13 +1,8 @@
-import type { StoryObj } from "@storybook/react";
-import {
-  createQueryStore,
-  createStore,
-  useShallow,
-  createJSONStorage,
-} from "@zustand/index";
+import type { StoryObj } from '@storybook/react-vite';
+import { createQueryStore, createStore, useShallow, createJSONStorage } from '@zustand';
 
 const meta = {
-  title: "Example/Zustand",
+  title: 'Example/Zustand',
 };
 
 export default meta;
@@ -31,12 +26,12 @@ const [useBearStore] = createStore<BearState>(
   {
     devtoolsOptions: {
       enabled: true,
-      name: Symbol("$BEAR_STORE").toString(),
-      anonymousActionType: "[$BEAR_STORE] Manipulated",
-      store: "$STORE",
+      name: Symbol('$BEAR_STORE').toString(),
+      anonymousActionType: '[$BEAR_STORE] Manipulated',
+      store: '$STORE',
     },
     persistOptions: {
-      name: Symbol("$BEAR_STORE_STORAGE").toString(),
+      name: Symbol('$BEAR_STORE_STORAGE').toString(),
       storage: createJSONStorage(() => localStorage),
       partialize(state) {
         return {
@@ -47,10 +42,10 @@ const [useBearStore] = createStore<BearState>(
         console.log({ initialState });
         return (persistedState, error) => {
           if (error) {
-            console.log("ERROR DURING REHYDRATE STORAGE");
+            console.log('ERROR DURING REHYDRATE STORAGE');
           } else {
             console.log({ persistedState });
-            console.log("HYDRATION SUCCESSFULLY");
+            console.log('HYDRATION SUCCESSFULLY');
           }
         };
       },
@@ -61,9 +56,7 @@ const [useBearStore] = createStore<BearState>(
 
 export const Default: Story = {
   render: (args) => {
-    const [bears, increase, trees, plant] = useBearStore(
-      useShallow((s) => [s.bears, s.increase, s.trees, s.plant]),
-    );
+    const [bears, increase, trees, plant] = useBearStore(useShallow((s) => [s.bears, s.increase, s.trees, s.plant]));
 
     return (
       <div>
@@ -84,7 +77,7 @@ import {
   createStore,
   useShallow,
   createJSONStorage,
-} from "@zustand/index";
+} from "@zustand";
 
 interface BearState {
   bears: number;
@@ -164,9 +157,7 @@ const useQuery = createQueryStore<Response>();
 
 export const QueryStore: Story = {
   render: (args) => {
-    const { isPending, error, data, executeQueryFn, setData } = useQuery(
-      useShallow((s) => s),
-    );
+    const { isPending, error, data, executeQueryFn, setData } = useQuery(useShallow((s) => s));
 
     const handleSubmit = () => {
       executeQueryFn({
@@ -174,9 +165,9 @@ export const QueryStore: Story = {
           setData(null as unknown as Response);
           await delay();
           if (Math.random() > 0.5) {
-            throw new Error("Something went wrong!");
+            throw new Error('Something went wrong!');
           }
-          return { id: "1", description: "", name: "" };
+          return { id: '1', description: '', name: '' };
         },
         queryFnSuccess: (response) => {
           console.log({ response });
@@ -212,7 +203,7 @@ import {
   createStore,
   useShallow,
   createJSONStorage,
-} from "@zustand/index";
+} from "@zustand";
 
 const delay = () => new Promise((resolve) => setTimeout(resolve, 2000));
 

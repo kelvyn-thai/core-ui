@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Label } from "@label/index";
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { Label } from '@label';
 
 const meta = {
-  title: "Example/Label",
+  title: 'Example/Label',
   component: Label,
   parameters: {},
 } satisfies Meta<typeof Label>;
@@ -12,33 +12,33 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    size: "medium",
-    content: "Medium Label",
+    size: 'medium',
+    content: 'Medium Label',
   },
 };
 
 export const SmallSize: Story = {
   args: {
-    size: "small",
-    content: "Small Label",
+    size: 'small',
+    content: 'Small Label',
   },
 };
 
 export const LargeSize: Story = {
   args: {
-    size: "large",
-    content: "Large Label",
+    size: 'large',
+    content: 'Large Label',
   },
 };
 
 export const WithChildren: Story = {
   args: {
-    size: "medium",
+    size: 'medium',
   },
   render: (args) => {
     return (
       <Label {...args}>
-        <p style={{ color: "red" }}>Customized Paragraph</p>
+        <p style={{ color: 'red' }}>Customized Paragraph</p>
       </Label>
     );
   },
