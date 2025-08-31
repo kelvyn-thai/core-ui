@@ -1,6 +1,6 @@
 import React, { JSX } from 'react';
 import clsx from 'clsx';
-import './label.less';
+import './label.css';
 
 export type LabelProps = {
   children?: JSX.Element;

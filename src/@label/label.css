@@ -10,16 +10,17 @@
   box-sizing: border-box;
 }
 
-label.base-label.base-label--small {
+.base-label--small {
   font-size: 12px;
   height: 14px;
 }
 
-label.base-label.base-label--medium {
+.base-label--medium {
   font-size: 14px;
   height: 16px;
 }
-label.base-label.base-label--large {
+
+.base-label--large {
   font-size: 16px;
   height: 18px;
 }

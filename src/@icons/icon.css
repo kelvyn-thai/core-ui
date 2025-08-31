@@ -1,0 +1,22 @@
+.base-icon {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  display: block;
+  cursor: pointer;
+}
+
+.base-icon--small {
+  width: 14px;
+  height: 14px;
+}
+
+.base-icon--medium {
+  width: 16px;
+  height: 16px;
+}
+
+.base-icon--large {
+  width: 20px;
+  height: 20px;
+}

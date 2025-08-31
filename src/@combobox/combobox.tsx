@@ -1,17 +1,15 @@
 import { JSX, useMemo } from 'react';
 import clsx from 'clsx';
 
-import { Label } from '../@label';
-import { Input } from '../@input';
-import { Icon, SearchIcon } from '../@icons';
+import { SearchIcon } from '../@icons';
 import { useClickOutside } from '../@hook';
 
-import './combobox.less';
+import './combobox.css';
 
 export type ComboboxItem = {
   text: string;
   value: string;
-  metadata?: any;
+  metadata?: Record<string, unknown>;
 };
 
 export type ComboboxProps = {
@@ -90,7 +88,7 @@ const Combobox = ({
             return (
               <li
                 role="option"
-                className={clsx('base-dropdown-menu-item', isSelected && 'base-dropdown-menu-item--selected')}
+                className={clsx('base-combobox__item', isSelected && 'base-combobox__item--selected')}
                 key={item.value}
                 onClick={() => onSelectItem(item)}
                 aria-selected={isSelected}
@@ -105,34 +103,36 @@ const Combobox = ({
   };
 
   return (
-    <div ref={wrapperRef} className={clsx('combobox-wrapper', className)}>
-      {label && <Label content={label} className="base-combobox-label" data-testid="label" />}
-      <div className={clsx('base-wrapper-input')}>
-        <Input
+    <div ref={wrapperRef} className={clsx('base-combobox', className)}>
+      {label && (
+        <div className="base-combobox__label" data-testid="label">
+          {label}
+        </div>
+      )}
+      <div className="base-combobox__input-wrapper">
+        <input
           type="text"
           placeholder={placeholder}
           value={keySearch}
           onChange={(e) => onChangeKeySearch(e.target.value)}
-          className="base-input"
+          className="base-combobox__input"
           onFocus={() => setIsMenuOpen(true)}
           data-testid="input"
         />
-        <Icon size="sm" className="input-icon">
+        <div className="base-combobox__icon">
           <SearchIcon />
-        </Icon>
+        </div>
       </div>
       {isMenuOpen && renderMenu()}
     </div>
   );
 };
 
-export const ComboboxMessage = ({ msg }: { msg: string }) => (
-  <li className={clsx('base-dropdown-menu-item--msg')}>{msg}</li>
-);
+export const ComboboxMessage = ({ msg }: { msg: string }) => <li className="base-combobox__message">{msg}</li>;
 
 export const ComboboxDropdownMenu = ({ children }: { children: JSX.Element | JSX.Element[] }) => {
   return (
-    <ul className="base-dropdown-menu" role="listbox" data-testid="dropdown-menu">
+    <ul className="base-combobox__dropdown" role="listbox" data-testid="dropdown-menu">
       {children}
     </ul>
   );

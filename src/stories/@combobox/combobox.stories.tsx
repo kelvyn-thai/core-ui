@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, fireEvent, userEvent, within } from '@storybook/test';
 import { Combobox, ComboboxItem, ComboboxProps } from '@combobox';
 import { useForm, Controller, useWatch } from 'react-hook-form';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -7,22 +8,216 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import debounce from 'lodash/debounce';
 import { generateMockItems } from './combobox.factories';
-import '@combobox/combobox.less';
+import { StoryShowcase, StoryCard, StoryGrid, ComponentPreview, PropertyTable, StatusBadge } from 'src/stories/shared';
+import '@combobox/combobox.css';
 import { Button } from '@button';
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const meta = {
-  title: 'Example/Combobox',
+  title: 'Components/Combobox',
   component: Combobox,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: 'A searchable dropdown combobox component with BEM methodology and full keyboard navigation.',
+      },
+    },
   },
   tags: ['autodocs'],
+  argTypes: {
+    placeholder: {
+      control: 'text',
+      description: 'Placeholder text for the input',
+    },
+    label: {
+      control: 'text',
+      description: 'Label for the combobox',
+    },
+    isLoading: {
+      control: 'boolean',
+      description: 'Whether the combobox is in loading state',
+    },
+  },
 } satisfies Meta<typeof Combobox>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+
+export const SimpleCombobox: Story = {
+  args: {} as ComboboxProps,
+  render: () => {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [items] = useState<ComboboxItem[]>([
+      { text: 'Apple', value: 'apple' },
+      { text: 'Banana', value: 'banana' },
+      { text: 'Cherry', value: 'cherry' },
+      { text: 'Date', value: 'date' },
+      { text: 'Elderberry', value: 'elderberry' },
+    ]);
+    const [selectedItem, setSelectedItem] = useState<ComboboxItem | null>(null);
+    const [keySearch, setKeySearch] = useState('');
+
+    const filteredItems = useMemo(
+      () => items.filter((item) => item.text.toLowerCase().includes(keySearch.toLowerCase())),
+      [items, keySearch],
+    );
+
+    const props: ComboboxProps = {
+      label: 'Choose a fruit',
+      placeholder: 'Type to search fruits...',
+      isLoading: false,
+      items: filteredItems,
+      selectedItem,
+      keySearch,
+      onChangeKeySearch: setKeySearch,
+      onSelectItem: (item) => {
+        setSelectedItem(item);
+        setKeySearch(item.text);
+        setIsMenuOpen(false);
+      },
+      isMenuOpen,
+      setIsMenuOpen,
+    };
+
+    return (
+      <div className="w-96 p-4">
+        <Combobox {...props} />
+        <div className="mt-4 text-sm text-gray-600" data-testid="selected-result">
+          Selected: {selectedItem?.text || 'None'}
+        </div>
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Test initial render
+    const input = canvas.getByTestId('input');
+    const label = canvas.getByTestId('label');
+
+    expect(input).toBeInTheDocument();
+    expect(input).toHaveClass('base-combobox__input');
+    expect(label).toHaveClass('base-combobox__label');
+    expect(label).toHaveTextContent('Choose a fruit');
+
+    // Test initial state - no selection
+    const selectedResult = canvas.getByTestId('selected-result');
+    expect(selectedResult).toHaveTextContent('Selected: None');
+
+    // Test opening dropdown on focus
+    await userEvent.click(input);
+    expect(input).toHaveFocus();
+
+    // Test dropdown appears with items
+    const dropdown = canvas.getByTestId('dropdown-menu');
+    expect(dropdown).toBeInTheDocument();
+    expect(dropdown).toHaveClass('base-combobox__dropdown');
+
+    // Test items are rendered
+    const appleItem = canvas.getByText('Apple');
+    const bananaItem = canvas.getByText('Banana');
+    expect(appleItem).toHaveClass('base-combobox__item');
+    expect(bananaItem).toHaveClass('base-combobox__item');
+
+    // Test selecting an item
+    await userEvent.click(appleItem);
+    expect(selectedResult).toHaveTextContent('Selected: Apple');
+    expect(input).toHaveValue('Apple');
+
+    // Test search functionality
+    await userEvent.clear(input);
+    await userEvent.type(input, 'ban');
+
+    // Should show filtered results
+    expect(canvas.getByText('Banana')).toBeInTheDocument();
+    expect(canvas.queryByText('Apple')).not.toBeInTheDocument();
+
+    // Test selecting filtered item
+    await userEvent.click(canvas.getByText('Banana'));
+    expect(selectedResult).toHaveTextContent('Selected: Banana');
+    expect(input).toHaveValue('Banana');
+  },
+};
+
+export const LoadingState: Story = {
+  args: {} as ComboboxProps,
+  render: () => {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [keySearch, setKeySearch] = useState('');
+
+    const props: ComboboxProps = {
+      label: 'Loading example',
+      placeholder: 'Search while loading...',
+      isLoading: true,
+      items: [],
+      selectedItem: null,
+      keySearch,
+      onChangeKeySearch: setKeySearch,
+      onSelectItem: () => {},
+      isMenuOpen,
+      setIsMenuOpen,
+    };
+
+    return (
+      <div className="w-96 p-4">
+        <Combobox {...props} />
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const input = canvas.getByTestId('input');
+    await userEvent.click(input);
+
+    // Test loading state shows loading message
+    const dropdown = canvas.getByTestId('dropdown-menu');
+    expect(dropdown).toBeInTheDocument();
+    expect(canvas.getByText('Loading...')).toBeInTheDocument();
+    expect(canvas.getByText('Loading...')).toHaveClass('base-combobox__message');
+  },
+};
+
+export const EmptyState: Story = {
+  args: {} as ComboboxProps,
+  render: () => {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [keySearch, setKeySearch] = useState('xyz');
+
+    const props: ComboboxProps = {
+      label: 'Empty results',
+      placeholder: 'Search with no results...',
+      isLoading: false,
+      items: [], // No items to show empty state
+      selectedItem: null,
+      keySearch,
+      onChangeKeySearch: setKeySearch,
+      onSelectItem: () => {},
+      isMenuOpen,
+      setIsMenuOpen,
+    };
+
+    return (
+      <div className="w-96 p-4">
+        <Combobox {...props} />
+      </div>
+    );
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    const input = canvas.getByTestId('input');
+    await userEvent.click(input);
+
+    // Test empty state shows no data message
+    const dropdown = canvas.getByTestId('dropdown-menu');
+    expect(dropdown).toBeInTheDocument();
+    expect(canvas.getByText('No data')).toBeInTheDocument();
+    expect(canvas.getByText('No data')).toHaveClass('base-combobox__message');
+  },
+};
 
 export const Default: Story = {
   render: (args) => {
@@ -306,7 +501,7 @@ export const WithRenderItem: Story = {
     items: generateMockItems(5),
     renderItem: (item) => (
       <li className="base-dropdown-menu-item">
-        #{item.value.slice(0, 4)}-${item.text}-{item?.metadata?.price!}$
+        #{item.value.slice(0, 4)}-{item.text}-{(item?.metadata as any)?.price || 0}$
       </li>
     ),
     setIsMenuOpen: () => {},

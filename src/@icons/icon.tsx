@@ -1,11 +1,11 @@
 import { clsx } from 'clsx';
-import './icon.less';
+import './icon.css';
 
 export interface IconProps extends React.HTMLAttributes<HTMLSpanElement> {
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  size?: 'small' | 'medium' | 'large';
 }
 
-export const Icon = ({ size = 'md', className, children, ...iconProps }: IconProps) => {
+export const Icon = ({ size = 'medium', className, children, ...iconProps }: IconProps) => {
   return (
     <span className={clsx('base-icon', `base-icon--${size}`, className)} {...{ ...iconProps }}>
       {children}

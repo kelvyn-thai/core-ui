@@ -1,4 +1,5 @@
 import type { Preview } from '@storybook/react-vite';
+import 'src/index.css';
 
 // Set test environment for Storybook
 if (typeof window !== 'undefined') {
