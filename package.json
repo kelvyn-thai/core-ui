@@ -10,9 +10,11 @@
     "lib/"
   ],
   "scripts": {
-    "dev": "NODE_ENV=development vite",
-    "preview": "vite preview",
-    "build": "NODE_ENV=production vite build",
+    "dev": "NODE_ENV=development vite --config vite.dev.config.ts",
+    "preview": "vite preview --config vite.dev.config.ts",
+    "build": "pnpm build:main && pnpm build:components",
+    "build:main": "rm -rf lib && NODE_ENV=production BUILD_TYPE=main vite build --config vite.main.config.ts",
+    "build:components": "NODE_ENV=production BUILD_TYPE=components vite build --config vite.components.config.ts",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "format": "prettier src/ --write",
@@ -199,9 +201,56 @@
   },
   "exports": {
     ".": {
+      "types": "./lib/index.d.ts",
       "import": "./lib/index.es.js",
       "require": "./lib/index.cjs.js"
-    }
+    },
+    "./@button": {
+      "types": "./lib/@button/index.d.ts",
+      "import": "./lib/@button/index.es.js",
+      "require": "./lib/@button/index.cjs.js"
+    },
+    "./@combobox": {
+      "types": "./lib/@combobox/index.d.ts",
+      "import": "./lib/@combobox/index.es.js",
+      "require": "./lib/@combobox/index.cjs.js"
+    },
+    "./@input": {
+      "types": "./lib/@input/index.d.ts",
+      "import": "./lib/@input/index.es.js",
+      "require": "./lib/@input/index.cjs.js"
+    },
+    "./@label": {
+      "types": "./lib/@label/index.d.ts",
+      "import": "./lib/@label/index.es.js",
+      "require": "./lib/@label/index.cjs.js"
+    },
+    "./@icons": {
+      "types": "./lib/@icons/index.d.ts",
+      "import": "./lib/@icons/index.es.js",
+      "require": "./lib/@icons/index.cjs.js"
+    },
+    "./@utils": {
+      "types": "./lib/@utils/index.d.ts",
+      "import": "./lib/@utils/index.es.js",
+      "require": "./lib/@utils/index.cjs.js"
+    },
+    "./@zustand": {
+      "types": "./lib/@zustand/index.d.ts",
+      "import": "./lib/@zustand/index.es.js",
+      "require": "./lib/@zustand/index.cjs.js"
+    },
+    "./@hook": {
+      "types": "./lib/@hook/index.d.ts",
+      "import": "./lib/@hook/index.es.js",
+      "require": "./lib/@hook/index.cjs.js"
+    },
+    "./style.css": "./lib/core-ui.css",
+    "./@button/index.css": "./lib/@button/index.css",
+    "./@combobox/index.css": "./lib/@combobox/index.css",
+    "./@input/index.css": "./lib/@input/index.css",
+    "./@label/index.css": "./lib/@label/index.css",
+    "./@icons/index.css": "./lib/@icons/index.css"
   },
   "engines": {
     "node": ">=20.19.0",
