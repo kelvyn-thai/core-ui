@@ -41,7 +41,7 @@ export default defineConfig((): UserConfig => {
           '@icons': path.resolve(__dirname, 'src/@icons/index.ts'),
         },
         fileName: (format, entryName) => {
-          return `${entryName}/index.${format}.js`;
+          return format === 'es' ? `${entryName}/index.js` : `${entryName}/index.${format}.js`;
         },
       },
       rollupOptions: {
