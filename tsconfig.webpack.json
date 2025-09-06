@@ -1,21 +1,19 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
-    "skipLibCheck": true,
+    "target": "es2015",
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
+    "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": false,
+    "module": "esnext",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
+    "noEmit": false,
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
@@ -42,6 +40,17 @@
     "outDir": "lib"
   },
   "include": ["src"],
-  "exclude": ["node_modules", "lib", "dist", "stories/**/*", "webpack.config.js", "webpack-sharing.js"],
-  "types": ["vite/client"]
+  "exclude": [
+    "node_modules", 
+    "lib",
+    "**/__test__/**",
+    "**/__tests__/**", 
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "**/*.test.ts", 
+    "**/*.test.tsx",
+    "**/*.stories.ts",
+    "**/*.stories.tsx",
+    "**/stories/**"
+  ]
 }

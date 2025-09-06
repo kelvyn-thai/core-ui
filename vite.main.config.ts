@@ -4,6 +4,7 @@ import dts from 'vite-plugin-dts';
 import path from 'path';
 import tailwindcss from '@tailwindcss/vite';
 import { resolveConfig, cssConfig, dtsConfig, libConfig, rollupConfig, buildConfig } from './vite.shared';
+import { analyzer } from 'vite-bundle-analyzer'
 
 
 export default defineConfig((): UserConfig => {
@@ -25,6 +26,7 @@ export default defineConfig((): UserConfig => {
         ],
       }),
       tailwindcss(),
+      process.env.VITE_BUNDLE_ANALYZER ? analyzer() : undefined,
     ],
 
     resolve: resolveConfig,
@@ -56,7 +58,6 @@ export default defineConfig((): UserConfig => {
             ...rollupConfig.output.globals,
             zustand: "zustand",
           },
-          assetFileNames: () => 'core-ui.css',
         },
       },
     },

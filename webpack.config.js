@@ -1,10 +1,10 @@
-const path = require("path");
-const BundleAnalyzerPlugin =
-  require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
-const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
+const path = require('path');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 const {
   isEnvDevelopment,
@@ -29,85 +29,85 @@ const {
 
   shouldBundleAnalyzer,
   shouldGenerateHTML,
-} = require("./webpack-sharing");
+
+  // Single optimization flag
+  shouldOptimize,
+} = require('./webpack-sharing.js');
 
 const resolveApp = (relativePath) => path.resolve(__dirname, relativePath);
 
 const paths = {
-  appSrc: resolveApp("src"),
-  appPath: resolveApp("."),
-  appBuild: resolveApp("lib"),
+  appSrc: resolveApp('src'),
+  appPath: resolveApp('.'),
+  appBuild: resolveApp('lib'),
 };
 
 const resolveEntry = (relativePath) => path.resolve(paths.appSrc, relativePath);
 
 const webpackEntry = {
   index: {
-    import: resolveEntry("index.ts"),
+    import: resolveEntry('index.ts'),
   },
-  "@input": {
-    import: resolveEntry("@input/index.ts"),
+  '@input': {
+    import: resolveEntry('@input/index.ts'),
   },
-  "@label": {
-    import: resolveEntry("@label/index.ts"),
+  '@label': {
+    import: resolveEntry('@label/index.ts'),
   },
-  "@icons": {
-    import: resolveEntry("@icons/index.ts"),
+  '@icons': {
+    import: resolveEntry('@icons/index.ts'),
   },
-  "@hook": {
-    import: resolveEntry("@hook/index.ts"),
+  '@combobox': {
+    import: resolveEntry('@combobox/index.ts'),
   },
-  "@combobox": {
-    import: resolveEntry("@combobox/index.ts"),
+  '@button': {
+    import: resolveEntry('@button/index.ts'),
   },
-  "@button": {
-    import: resolveEntry("@button/index.ts"),
+  '@zustand': {
+    import: resolveEntry('@zustand/index.ts'),
   },
-  "@zustand": {
-    import: resolveEntry("@zustand/index.ts"),
+  '@utils': {
+    import: resolveEntry('@utils/index.ts'),
   },
-  "@utils": {
-    import: resolveEntry("@utils/index.ts"),
+  '@hook': {
+    import: resolveEntry('@hook/index.ts'),
   },
 };
 
-console.debug({
-  webpackEntry,
-});
-
-// console.log(entryObj);
 /** @type { import('webpack').Configuration } */
 module.exports = {
   entry: webpackEntry,
   output: {
     filename: (pathData) => {
-      return pathData.chunk.name === "index" ? "[name].js" : "[name]/index.js";
+      return pathData.chunk.name === 'index' ? '[name].js' : '[name]/index.js';
     },
-    path: path.resolve(__dirname, "lib"),
+    path: path.resolve(__dirname, 'lib'),
     clean: true,
-    publicPath: "./",
-    globalObject: "this",
+    publicPath: './',
+    globalObject: 'this',
     library: {
-      type: "module",
+      type: 'umd',
     },
   },
   mode: mode,
-  devtool: isEnvProduction
-    ? shouldUseSourceMap
-      ? "source-map"
-      : false
-    : isEnvDevelopment && "inline-source-map",
+  devtool: isEnvProduction ? (shouldUseSourceMap ? 'source-map' : false) : isEnvDevelopment && 'inline-source-map',
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: ["babel-loader"],
+        use: ['babel-loader'],
       },
       {
         test: /\.(ts|tsx)?$/,
-        use: "ts-loader",
-        exclude: /node_modules/,
+        use: {
+          loader: 'ts-loader',
+          options: {
+            configFile: 'tsconfig.webpack.json',
+            onlyCompileBundledFiles: true,
+          },
+        },
+        exclude: /(node_modules|__tests__|__test__|\.spec\.|\.test\.|\.stories\.).*$/,
       },
       {
         test: cssRegex,
@@ -134,64 +134,70 @@ module.exports = {
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        type: "asset/resource",
+        type: 'asset/resource',
         generator: {
-          filename: "images/[name][ext]",
+          filename: 'images/[name][ext]',
         },
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
-        type: "asset/resource",
+        type: 'asset/resource',
         generator: {
-          filename: "fonts/[name][ext]",
+          filename: 'fonts/[name][ext]',
         },
       },
     ],
   },
   resolve: {
-    extensions: [".ts", ".js", ".jsx", ".tsx"],
+    extensions: ['.ts', '.js', '.jsx', '.tsx'],
     alias: {
-      src: path.resolve(__dirname, "src"),
+      src: path.resolve(__dirname, 'src'),
     },
+    plugins: [
+      new TsconfigPathsPlugin({
+        configFile: resolveApp('./tsconfig.webpack.json'),
+      }),
+    ],
   },
   plugins: isEnvProduction
     ? [
         new MiniCssExtractPlugin({
           filename: (pathData) => {
-            return pathData.chunk.name === "index"
-              ? "main.css"
-              : "[name]/index.css";
+            return pathData.chunk.name === 'index' ? 'core-ui.css' : '[name]/index.css';
           },
         }),
         shouldBundleAnalyzer ? new BundleAnalyzerPlugin() : undefined,
         shouldGenerateHTML ? new HtmlWebpackPlugin() : undefined,
-        new TsconfigPathsPlugin({
-          configFile: resolveApp("./tsconfig.json"),
-        }),
       ].filter(Boolean)
     : [],
   externals: {
-    react: "react",
-    "react-dom": "react-dom",
+    react: 'react',
+    'react-dom': 'react-dom',
   },
   optimization: {
-    minimizer: [
-      // For webpack@5 you can use the `...` syntax to extend existing minimizers (i.e. `terser-webpack-plugin`), uncomment the next line
-      `...`,
-      new CssMinimizerPlugin({
-        minify: CssMinimizerPlugin.lightningCssMinify,
-        minimizerOptions: {
-          preset: [
-            "default",
-            {
-              discardComments: { removeAll: true },
+    minimize: isEnvProduction && shouldOptimize,
+    minimizer: shouldOptimize
+      ? [
+          // JS minification with Terser
+          new TerserPlugin({
+            extractComments: false,
+            parallel: true,
+          }),
+
+          // CSS minification with LightningCSS
+          new CssMinimizerPlugin({
+            minify: CssMinimizerPlugin.lightningCssMinify,
+            minimizerOptions: {
+              preset: [
+                'default',
+                {
+                  discardComments: { removeAll: true },
+                },
+              ],
             },
-          ],
-        },
-      }),
-    ],
-  },
-  experiments: {
-    outputModule: true, // ✅ required for library.type = 'module'
+            parallel: true,
+          }),
+        ]
+      : [],
   },
 };

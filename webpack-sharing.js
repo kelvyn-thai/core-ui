@@ -13,8 +13,11 @@ const isEnvProduction = process.env.NODE_ENV === "production";
 const isEnvDevelopment = process.env.NODE_ENV === "development";
 const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP === "true";
 const sourceMap = isEnvProduction ? shouldUseSourceMap : isEnvDevelopment;
-const shouldBundleAnalyzer = process.env.BUNDLE_ANALYZER === "true";
-const shouldGenerateHTML = process.env.GENERATE_HTML === "true";
+const shouldBundleAnalyzer = process.env.WEBPACK_BUNDLE_ANALYZER === "true";
+const shouldGenerateHTML = process.env.WEBPACK_GENERATE_HTML === "true";
+
+// Single optimization flag - true = apply all optimizations, false = no optimizations
+const shouldOptimize = process.env.WEBPACK_OPTIMIZE !== "false"; // Default: true
 
 const mode = isEnvProduction ? "production" : "development";
 
@@ -103,4 +106,7 @@ module.exports = {
 
   shouldBundleAnalyzer,
   shouldGenerateHTML,
+  
+  // Single optimization flag
+  shouldOptimize,
 };
