@@ -7,6 +7,30 @@
 - Copyright [Kelvyn Thai](thainguyenhoangphatit@gmail.com)
 - Documents writer: Kelvyn Thai (thainguyenhoangphatit@gmail.com)
 
+## 🧪 Local Development & Testing
+
+### Example Next.js App
+
+The project includes a complete Next.js example app for local testing:
+
+```bash
+# 1. Build the Core UI library
+pnpm webpack:build-production
+
+# 2. Run the example app
+cd examples/example-nextjs
+pnpm install
+pnpm dev
+```
+
+Visit `http://localhost:3000` to see all components in action. The example app demonstrates:
+- All component variants and sizes
+- Proper CSS imports (both bundled and tree-shaking)
+- Real-time interactivity
+- Integration patterns
+
+Perfect for testing changes before publishing! 🚀
+
 ## How to use it? 
 
 #### Install package:

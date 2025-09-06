@@ -2,7 +2,6 @@ import { defineConfig, type UserConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import dts from 'vite-plugin-dts';
 import path from 'path';
-import tailwindcss from '@tailwindcss/vite';
 import { resolveConfig, cssConfig, dtsConfig, libConfig, rollupConfig, buildConfig } from './vite.shared';
 import { analyzer } from 'vite-bundle-analyzer'
 
@@ -25,7 +24,6 @@ export default defineConfig((): UserConfig => {
           'src/index.ts',
         ],
       }),
-      tailwindcss(),
       process.env.VITE_BUNDLE_ANALYZER ? analyzer() : undefined,
     ],
 
@@ -46,7 +44,10 @@ export default defineConfig((): UserConfig => {
           '@hook': path.resolve(__dirname, 'src/@hook/index.ts'),
         },
         fileName: (format, entryName) => {
-          return entryName === 'index' ? `index.${format}.js` : `${entryName}/index.${format}.js`;
+          if (entryName === 'index') {
+            return format === 'es' ? 'index.js' : `index.${format}.js`;
+          }
+          return format === 'es' ? `${entryName}/index.js` : `${entryName}/index.${format}.js`;
         },
       },
       rollupOptions: {
