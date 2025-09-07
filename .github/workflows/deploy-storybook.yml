@@ -25,25 +25,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
-
-      - name: Enable Corepack
-        run: corepack enable
-
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 10.13.1
 
-      - name: Install dependencies
-        run: pnpm install
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+          cache: pnpm
 
-      - name: Build library
-        run: pnpm build
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
       - name: Build Storybook
         id: build
@@ -103,41 +101,3 @@ jobs:
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
-
-  # Docker build and push (optional)
-  docker:
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Download Storybook artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: storybook-build
-          path: storybook-static
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build Docker image
-        run: |
-          docker build -t core-ui-storybook:latest .
-          echo "✅ Docker image built successfully"
-
-      - name: Test Docker container
-        run: |
-          echo "🐳 Testing Docker container..."
-          docker run -d -p 8080:80 --name storybook-test core-ui-storybook:latest
-          sleep 10
-          echo "🔍 Checking container health..."
-          curl -f http://localhost:8080/health || exit 1
-          echo "🔍 Checking main page..."
-          curl -f http://localhost:8080/ | head -5
-          echo "🧹 Cleaning up..."
-          docker stop storybook-test
-          docker rm storybook-test
-          echo "✅ Docker container test passed"
