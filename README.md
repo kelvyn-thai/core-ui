@@ -227,9 +227,11 @@ In the project directory, you can run:
 
 | Command        |          Description           | ENV |
 | :------------- | :----------------------------: | :-: |
-| yarn           |          Install NPM.          | DEV |
-| yarn storybook | Start development by storybook | DEV |
-| yarn test      |           Start test           | DEV |
+| pnpm install   |          Install dependencies.          | DEV |
+| pnpm dev       | Start development server | DEV |
+| pnpm storybook | Start development by storybook | DEV |
+| pnpm test      |           Start test           | DEV |
+| pnpm build     |           Build library           | PROD |
 
 ## Main Stack
 
@@ -247,3 +249,20 @@ In the project directory, you can run:
   - [index](./src/index.ts/): define all component used to build core-ui such as (@combobox, @input, @icon, @label)
   - [hooks](./src/hooks/index): define all hooks used to build application
   - [stories](./src/stories/@combobox/combobox.stories.tsx): define all stories/documents used to develop application
+
+## 🚀 GitHub Templates
+
+Core UI includes GitHub merge request templates for consistent development:
+
+### **Templates Available:**
+- **New Component** - For adding new components
+- **Component Improvement** - For enhancing existing components  
+- **Bug Fix** - For fixing bugs
+- **Infrastructure** - For build/config changes
+- **Default** - General purpose template
+
+### **How to Use:**
+1. Go to GitHub → Pull requests → New pull request
+2. Select the appropriate template from the dropdown
+3. Fill out the template with your changes
+4. Submit the pull request
