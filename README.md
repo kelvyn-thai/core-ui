@@ -263,4 +263,4 @@ Core UI includes a single GitHub merge request template for consistent developme
 3. Fill out the template with your changes
 4. Submit the pull request
 
-The template is located at `.github/merge_request_templates/merge_request.md`.
+The template is located at `.github/pull_request_template.md`.
