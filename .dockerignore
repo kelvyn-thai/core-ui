@@ -1,0 +1,84 @@
+# Dependencies
+node_modules
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing
+coverage
+.nyc_output
+jest
+.jest-cache
+__tests__
+*.test.*
+*.spec.*
+
+# Build outputs
+lib
+dist
+build
+storybook-static
+
+# Examples (not needed for production build)
+examples/
+
+# Environment files
+.env*
+!.env.example
+
+# IDE & Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Cache directories
+.npm
+.eslintcache
+.cache
+.parcel-cache
+
+# Git
+.git
+.gitignore
+
+# Documentation
+README.md
+*.md
+
+# CI/CD
+.github/
+.husky/
+
+# Development tools
+# .storybook/  # Commented out - needed for build
+
+# Temporary files
+*.tmp
+*.tmp.*
+
+# Docker files
+Dockerfile*
+docker-compose*
+.dockerignore

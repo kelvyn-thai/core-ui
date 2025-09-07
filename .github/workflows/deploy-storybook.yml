@@ -3,6 +3,8 @@ name: Deploy Storybook to GitHub Pages
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
 
 permissions:
   contents: read
@@ -10,9 +12,15 @@ permissions:
   id-token: write
 
 jobs:
-  deploy:
+  # Build and test Storybook
+  build:
     runs-on: ubuntu-latest
-
+    outputs:
+      storybook-path: ${{ steps.build.outputs.storybook-path }}
+    env:
+      NODE_ENV: production
+      STORYBOOK_BUILD: true
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -23,16 +31,65 @@ jobs:
           node-version: 20
           cache: pnpm
 
+      - name: Enable Corepack
+        run: corepack enable
+
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 8
+          version: 10.13.1
 
       - name: Install dependencies
         run: pnpm install
 
+      - name: Build library
+        run: pnpm build
+
       - name: Build Storybook
-        run: pnpm build-storybook
+        id: build
+        run: |
+          echo "🚀 Building Storybook..."
+          time pnpm build-storybook
+          echo "✅ Storybook built successfully"
+          echo "storybook-path=storybook-static" >> $GITHUB_OUTPUT
+
+      - name: Verify Storybook build
+        run: |
+          if [ ! -d "storybook-static" ]; then
+            echo "❌ Storybook build failed - no output directory"
+            exit 1
+          fi
+          echo "📊 Build size: $(du -sh storybook-static | cut -f1)"
+          echo "📁 Files count: $(find storybook-static -type f | wc -l)"
+          echo "🔍 Checking for required files..."
+          if [ ! -f "storybook-static/index.html" ]; then
+            echo "❌ Missing index.html"
+            exit 1
+          fi
+          echo "✅ All required files present"
+
+      - name: Upload Storybook artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: storybook-build
+          path: storybook-static
+          retention-days: 1
+
+  # Deploy to GitHub Pages
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download Storybook artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: storybook-build
+          path: storybook-static
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v4
@@ -46,3 +103,41 @@ jobs:
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
+
+  # Docker build and push (optional)
+  docker:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download Storybook artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: storybook-build
+          path: storybook-static
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        run: |
+          docker build -t core-ui-storybook:latest .
+          echo "✅ Docker image built successfully"
+
+      - name: Test Docker container
+        run: |
+          echo "🐳 Testing Docker container..."
+          docker run -d -p 8080:80 --name storybook-test core-ui-storybook:latest
+          sleep 10
+          echo "🔍 Checking container health..."
+          curl -f http://localhost:8080/health || exit 1
+          echo "🔍 Checking main page..."
+          curl -f http://localhost:8080/ | head -5
+          echo "🧹 Cleaning up..."
+          docker stop storybook-test
+          docker rm storybook-test
+          echo "✅ Docker container test passed"
