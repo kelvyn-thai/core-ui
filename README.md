@@ -35,7 +35,7 @@ Perfect for testing changes before publishing! 🚀
 
 #### Install package:
 ```
-yarn add git+https://github.com/kelvyn-thai/core-ui.git#v1.0.3
+pnpm add git+https://github.com/kelvyn-thai/core-ui.git
 ```
 
 #### Declare abs path:
@@ -219,7 +219,7 @@ A fully custom Combobox/Autocomplete component built using **React** and **TypeS
 
 ## How to run this project?
 
-- Run `yarn && yarn storybook`
+- Run `pnpm install && pnpm storybook`
 
 ## Available scripts
 
@@ -252,17 +252,15 @@ In the project directory, you can run:
 
 ## 🚀 GitHub Templates
 
-Core UI includes GitHub merge request templates for consistent development:
+Core UI includes a single GitHub merge request template for consistent development:
 
-### **Templates Available:**
-- **New Component** - For adding new components
-- **Component Improvement** - For enhancing existing components  
-- **Bug Fix** - For fixing bugs
-- **Infrastructure** - For build/config changes
-- **Default** - General purpose template
+### **Template Available:**
+- **Merge Request Template** - Comprehensive template for all types of changes
 
 ### **How to Use:**
 1. Go to GitHub → Pull requests → New pull request
-2. Select the appropriate template from the dropdown
+2. The template will be automatically loaded
 3. Fill out the template with your changes
 4. Submit the pull request
+
+The template is located at `.github/merge_request_templates/merge_request.md`.
