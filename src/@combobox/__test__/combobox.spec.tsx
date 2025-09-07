@@ -1,11 +1,11 @@
-import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
-import { Combobox, ComboboxItem } from "@combobox/index";
+import React from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { Combobox, ComboboxItem } from '@combobox/index';
 
-describe("Combobox", () => {
+describe('Combobox', () => {
   const items: ComboboxItem[] = [
-    { text: "Apple", value: "apple" },
-    { text: "Banana", value: "banana" },
+    { text: 'Apple', value: 'apple' },
+    { text: 'Banana', value: 'banana' },
   ];
 
   const setup = (props = {}) => {
@@ -31,53 +31,51 @@ describe("Combobox", () => {
     return { onSelectItem, onChangeKeySearch };
   };
 
-  it("should renders input and label", () => {
+  it('should renders input and label', () => {
     setup();
-    expect(screen.getByTestId("label")).toBeInTheDocument();
-    expect(screen.getByTestId("input")).toBeInTheDocument();
+    expect(screen.getByTestId('label')).toBeInTheDocument();
+    expect(screen.getByTestId('input')).toBeInTheDocument();
   });
 
-  it("should renders list items", () => {
+  it('should renders list items', () => {
     setup();
-    items.forEach((item) =>
-      expect(screen.getByText(item.text)).toBeInTheDocument(),
-    );
+    items.forEach((item) => expect(screen.getByText(item.text)).toBeInTheDocument());
   });
 
-  it("should calls onSelectItem when item clicked", () => {
+  it('should calls onSelectItem when item clicked', () => {
     const { onSelectItem } = setup();
 
-    fireEvent.click(screen.getByText("Apple"));
+    fireEvent.click(screen.getByText('Apple'));
     expect(onSelectItem).toHaveBeenCalledWith(items[0]);
   });
 
-  it("should calls onChangeKeySearch when input is typed", () => {
+  it('should calls onChangeKeySearch when input is typed', () => {
     const { onChangeKeySearch } = setup();
 
-    const input = screen.getByPlaceholderText("Search...");
-    fireEvent.change(input, { target: { value: "Ap" } });
-    expect(onChangeKeySearch).toHaveBeenCalledWith("Ap");
+    const input = screen.getByPlaceholderText('Search...');
+    fireEvent.change(input, { target: { value: 'Ap' } });
+    expect(onChangeKeySearch).toHaveBeenCalledWith('Ap');
   });
 
-  it("should shows loading message when isLoading is true", () => {
+  it('should shows loading message when isLoading is true', () => {
     setup({ isLoading: true });
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
+    expect(screen.getByText('Loading...')).toBeInTheDocument();
   });
 
   it("should shows 'Data is empty!' when no items and no search", () => {
-    setup({ items: [], keySearch: "" });
-    expect(screen.getByText("Data is empty!")).toBeInTheDocument();
+    setup({ items: [], keySearch: '' });
+    expect(screen.getByText('Data is empty!')).toBeInTheDocument();
   });
 
   it("should shows 'No result' when no items but search is entered", () => {
-    setup({ items: [], keySearch: "zoo" });
+    setup({ items: [], keySearch: 'zoo' });
     expect(screen.getByText("No result matching 'zoo'")).toBeInTheDocument();
   });
 
-  it("shold renders custom items via renderItem prop", () => {
+  it('shold renders custom items via renderItem prop', () => {
     const mockItems: ComboboxItem[] = [
-      { text: "Apple", value: "apple", metadata: { price: "10" } },
-      { text: "Banana", value: "banana", metadata: { price: "20" } },
+      { text: 'Apple', value: 'apple', metadata: { price: '10' } },
+      { text: 'Banana', value: 'banana', metadata: { price: '20' } },
     ];
     const onSelectItem = jest.fn();
 
@@ -94,27 +92,19 @@ describe("Combobox", () => {
         setIsMenuOpen={() => {}}
         onSelectItem={onSelectItem}
         renderItem={(item) => (
-          <li
-            data-testid={`custom-${item.value}`}
-            key={item.value}
-            onClick={() => onSelectItem(item)}
-          >
-            #{item.value}-{item.text}-{item.metadata?.price}$
+          <li data-testid={`custom-${item.value}`} key={item.value} onClick={() => onSelectItem(item)}>
+            #{item.value}-{item.text}-{item.metadata?.price as React.ReactNode}$
           </li>
         )}
       />,
     );
 
     // Check custom render output
-    expect(screen.getByTestId("custom-apple")).toHaveTextContent(
-      "#apple-Apple-10$",
-    );
-    expect(screen.getByTestId("custom-banana")).toHaveTextContent(
-      "#banana-Banana-20$",
-    );
+    expect(screen.getByTestId('custom-apple')).toHaveTextContent('#apple-Apple-10$');
+    expect(screen.getByTestId('custom-banana')).toHaveTextContent('#banana-Banana-20$');
 
     // Simulate click
-    fireEvent.click(screen.getByTestId("custom-banana"));
+    fireEvent.click(screen.getByTestId('custom-banana'));
     expect(onSelectItem).toHaveBeenCalled();
     expect(onSelectItem).toHaveBeenCalledWith(mockItems[1]);
   });

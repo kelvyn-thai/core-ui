@@ -7,11 +7,35 @@
 - Copyright [Kelvyn Thai](thainguyenhoangphatit@gmail.com)
 - Documents writer: Kelvyn Thai (thainguyenhoangphatit@gmail.com)
 
+## 🧪 Local Development & Testing
+
+### Example Next.js App
+
+The project includes a complete Next.js example app for local testing:
+
+```bash
+# 1. Build the Core UI library
+pnpm webpack:build-production
+
+# 2. Run the example app
+cd examples/example-nextjs
+pnpm install
+pnpm dev
+```
+
+Visit `http://localhost:3000` to see all components in action. The example app demonstrates:
+- All component variants and sizes
+- Proper CSS imports (both bundled and tree-shaking)
+- Real-time interactivity
+- Integration patterns
+
+Perfect for testing changes before publishing! 🚀
+
 ## How to use it? 
 
 #### Install package:
 ```
-yarn add git+https://github.com/kelvyn-thai/core-ui.git#v1.0.3
+pnpm add git+https://github.com/kelvyn-thai/core-ui.git
 ```
 
 #### Declare abs path:
@@ -195,7 +219,7 @@ A fully custom Combobox/Autocomplete component built using **React** and **TypeS
 
 ## How to run this project?
 
-- Run `yarn && yarn storybook`
+- Run `pnpm install && pnpm storybook`
 
 ## Available scripts
 
@@ -203,9 +227,11 @@ In the project directory, you can run:
 
 | Command        |          Description           | ENV |
 | :------------- | :----------------------------: | :-: |
-| yarn           |          Install NPM.          | DEV |
-| yarn storybook | Start development by storybook | DEV |
-| yarn test      |           Start test           | DEV |
+| pnpm install   |          Install dependencies.          | DEV |
+| pnpm dev       | Start development server | DEV |
+| pnpm storybook | Start development by storybook | DEV |
+| pnpm test      |           Start test           | DEV |
+| pnpm build     |           Build library           | PROD |
 
 ## Main Stack
 
@@ -223,3 +249,18 @@ In the project directory, you can run:
   - [index](./src/index.ts/): define all component used to build core-ui such as (@combobox, @input, @icon, @label)
   - [hooks](./src/hooks/index): define all hooks used to build application
   - [stories](./src/stories/@combobox/combobox.stories.tsx): define all stories/documents used to develop application
+
+## 🚀 GitHub Templates
+
+Core UI includes a single GitHub merge request template for consistent development:
+
+### **Template Available:**
+- **Merge Request Template** - Comprehensive template for all types of changes
+
+### **How to Use:**
+1. Go to GitHub → Pull requests → New pull request
+2. The template will be automatically loaded
+3. Fill out the template with your changes
+4. Submit the pull request
+
+The template is located at `.github/merge_request_templates/merge_request.md`.

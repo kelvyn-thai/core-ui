@@ -1,8 +1,8 @@
-import { delay } from "@utils/index";
-import { render, screen, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { useShallow, createQueryStore } from "@zustand/index";
-import { randProductName, randUuid, randNumber } from "@ngneat/falso";
+import { delay } from '@utils/index';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { useShallow, createQueryStore } from '@zustand/index';
+import { randProductName, randUuid, randNumber } from '@ngneat/falso';
 
 interface Response {
   id: string;
@@ -19,12 +19,10 @@ export const generateMockResponse = (): Response => ({
 });
 const mockData: Response = generateMockResponse();
 
-describe("@zustand/store.use-query", () => {
-  it("should fetch and render data on successful query", async () => {
+describe('@zustand/store.use-query', () => {
+  it('should fetch and render data on successful query', async () => {
     const QueryComponent = () => {
-      const { isPending, error, data, executeQueryFn } = useQuery(
-        useShallow((s) => s),
-      );
+      const { isPending, error, data, executeQueryFn } = useQuery(useShallow((s) => s));
 
       const handleSubmit = () => {
         executeQueryFn({
@@ -48,28 +46,24 @@ describe("@zustand/store.use-query", () => {
     };
 
     render(<QueryComponent />);
-    userEvent.click(screen.getByTestId("btn-query"));
+    await userEvent.click(screen.getByTestId('btn-query'));
 
-    expect(screen.getByTestId("loading")).toHaveTextContent("....");
+    expect(screen.getByTestId('loading')).toHaveTextContent('....');
 
     await waitFor(() => {
-      expect(screen.getByTestId("data")).toHaveTextContent(
-        JSON.stringify(mockData),
-      );
+      expect(screen.getByTestId('data')).toHaveTextContent(JSON.stringify(mockData));
     });
   });
 
-  it("should handle and render error when query fails", async () => {
+  it('should handle and render error when query fails', async () => {
     const QueryComponent = () => {
-      const { isPending, error, data, executeQueryFn } = useQuery(
-        useShallow((s) => s),
-      );
+      const { isPending, error, data, executeQueryFn } = useQuery(useShallow((s) => s));
 
       const handleSubmit = () => {
         executeQueryFn({
           queryFn: async () => {
             await delay(1000);
-            throw new Error("Something went wrong!");
+            throw new Error('Something went wrong!');
           },
         });
       };
@@ -87,14 +81,12 @@ describe("@zustand/store.use-query", () => {
     };
 
     render(<QueryComponent />);
-    userEvent.click(screen.getByTestId("btn-query"));
+    await userEvent.click(screen.getByTestId('btn-query'));
 
-    expect(screen.getByTestId("loading")).toHaveTextContent("....");
+    expect(screen.getByTestId('loading')).toHaveTextContent('....');
 
     await waitFor(() => {
-      expect(screen.getByTestId("error")).toHaveTextContent(
-        "Something went wrong!",
-      );
+      expect(screen.getByTestId('error')).toHaveTextContent('Something went wrong!');
     });
   });
 });

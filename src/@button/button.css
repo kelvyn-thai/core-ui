@@ -1,0 +1,140 @@
+/* Modern CSS with native nesting and CSS custom properties */
+:root {
+  /* Design tokens */
+  --color-primary: #1d4ed8;
+  --color-primary-hover: #1e40af;
+  --color-destructive: #dc2626;
+  --color-destructive-hover: #b91c1c;
+  --color-secondary: #f3f4f6;
+  --color-secondary-hover: #e5e7eb;
+  --color-outline: #f9fafb;
+  --color-border: #d1d5db;
+  --color-text: #111827;
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 0.75rem;
+  --spacing-lg: 1rem;
+  --spacing-xl: 2rem;
+
+  /* Sizes */
+  --size-sm: 32px;
+  --size-md: 40px;
+  --size-lg: 48px;
+
+  /* Font sizes */
+  --font-xs: 12px;
+  --font-sm: 14px;
+  --font-md: 16px;
+
+  /* Border radius */
+  --radius: 4px;
+
+  /* Transitions */
+  --transition: background-color 0.2s ease;
+}
+
+.base-button {
+  font-family: Arial, Helvetica, sans-serif;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  white-space: nowrap;
+  border-radius: var(--radius);
+  font-size: var(--font-sm);
+  font-weight: 400;
+  transition: var(--transition);
+  cursor: pointer;
+  border: none;
+}
+
+.base-button--primary {
+  background: var(--color-primary);
+  color: var(--color-white);
+  height: var(--size-md);
+  padding: 0 var(--spacing-lg);
+}
+
+.base-button--primary:hover {
+  background: var(--color-primary-hover);
+  font-weight: 600;
+}
+
+.base-button--destructive {
+  background: var(--color-destructive);
+  color: var(--color-white);
+  height: var(--size-md);
+  padding: 0 var(--spacing-lg);
+}
+
+.base-button--destructive:hover {
+  background: var(--color-destructive-hover);
+}
+
+.base-button--outline {
+  color: var(--color-black);
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  height: var(--size-md);
+  padding: 0 var(--spacing-lg);
+}
+
+.base-button--outline:hover {
+  background: var(--color-outline);
+}
+
+.base-button--secondary {
+  background: var(--color-secondary);
+  color: var(--color-text);
+  height: var(--size-md);
+  padding: 0 var(--spacing-lg);
+}
+
+.base-button--secondary:hover {
+  background: var(--color-secondary-hover);
+}
+
+.base-button--ghost {
+  background: transparent;
+  height: var(--size-md);
+  padding: 0 var(--spacing-lg);
+}
+
+.base-button--ghost:hover {
+  background: var(--color-secondary);
+  color: var(--color-text);
+}
+
+.base-button--link {
+  background: transparent;
+  color: var(--color-primary);
+  text-decoration: underline;
+  height: var(--size-md);
+  padding: 0 var(--spacing-lg);
+}
+
+.base-button--link:hover {
+  opacity: 0.8;
+}
+
+.base-button--small {
+  height: var(--size-sm);
+  font-size: var(--font-xs);
+  padding: 0 var(--spacing-md);
+}
+
+.base-button--medium {
+  height: var(--size-md);
+  font-size: var(--font-sm);
+  padding: 0 var(--spacing-lg);
+}
+
+.base-button--large {
+  height: var(--size-lg);
+  font-size: var(--font-md);
+  padding: 0 var(--spacing-xl);
+}

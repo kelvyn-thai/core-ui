@@ -1,6 +1,6 @@
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { createStore, useShallow, createJSONStorage } from "@zustand/index";
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { createStore, useShallow, createJSONStorage } from '@zustand/index';
 
 interface BearState {
   bears: number;
@@ -26,7 +26,7 @@ const [useBearPersistStore] = createStore<BearPersistState>(
   }),
   {
     persistOptions: {
-      name: "$BEAR_STORE",
+      name: '$BEAR_STORE',
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({ bears: state.bears }),
       version: 1,
@@ -34,12 +34,10 @@ const [useBearPersistStore] = createStore<BearPersistState>(
   },
 );
 
-describe("@zustand/store", () => {
-  it("should increment bears in non-persisted store", () => {
+describe('@zustand/store', () => {
+  it('should increment bears in non-persisted store', async () => {
     const NonPersistedBearComponent = () => {
-      const [bears, increase] = useBearStore(
-        useShallow((s) => [s.bears, s.increase]),
-      );
+      const [bears, increase] = useBearStore(useShallow((s) => [s.bears, s.increase]));
 
       return (
         <div>
@@ -53,18 +51,14 @@ describe("@zustand/store", () => {
 
     render(<NonPersistedBearComponent />);
 
-    expect(screen.getByTestId("totalBears")).toHaveTextContent(
-      "Total bears: 0",
-    );
+    expect(screen.getByTestId('totalBears')).toHaveTextContent('Total bears: 0');
 
-    userEvent.click(screen.getByTestId("btnIncreaseBears"));
+    await userEvent.click(screen.getByTestId('btnIncreaseBears'));
 
-    expect(screen.getByTestId("totalBears")).toHaveTextContent(
-      "Total bears: 1",
-    );
+    expect(screen.getByTestId('totalBears')).toHaveTextContent('Total bears: 1');
   });
 
-  it("should persist bears and ignore trees in localStorage", () => {
+  it('should persist bears and ignore trees in localStorage', async () => {
     const PersistedBearComponent = () => {
       const [bears, increase, trees, plantTrees] = useBearPersistStore(
         useShallow((s) => [s.bears, s.increase, s.trees, s.plantTrees]),
@@ -87,24 +81,16 @@ describe("@zustand/store", () => {
     render(<PersistedBearComponent />);
 
     // Initial state
-    expect(screen.getByTestId("totalBears")).toHaveTextContent(
-      "Total bears: 0",
-    );
-    expect(screen.getByTestId("totalTrees")).toHaveTextContent(
-      "Total trees: 0",
-    );
+    expect(screen.getByTestId('totalBears')).toHaveTextContent('Total bears: 0');
+    expect(screen.getByTestId('totalTrees')).toHaveTextContent('Total trees: 0');
 
-    userEvent.click(screen.getByTestId("btnIncreaseBears")); // persist
-    userEvent.click(screen.getByTestId("btnPlantTrees")); // not persisted
+    await userEvent.click(screen.getByTestId('btnIncreaseBears')); // persist
+    await userEvent.click(screen.getByTestId('btnPlantTrees')); // not persisted
 
-    expect(screen.getByTestId("totalBears")).toHaveTextContent(
-      "Total bears: 1",
-    );
-    expect(screen.getByTestId("totalTrees")).toHaveTextContent(
-      "Total trees: 1",
-    );
+    expect(screen.getByTestId('totalBears')).toHaveTextContent('Total bears: 1');
+    expect(screen.getByTestId('totalTrees')).toHaveTextContent('Total trees: 1');
 
-    const persisted = JSON.parse(localStorage.getItem("$BEAR_STORE")!);
+    const persisted = JSON.parse(localStorage.getItem('$BEAR_STORE')!);
     expect(persisted).toEqual({
       state: { bears: 1 },
       version: 1,

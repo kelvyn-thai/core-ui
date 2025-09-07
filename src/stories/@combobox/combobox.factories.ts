@@ -1,5 +1,5 @@
-import { randProductName, randUuid, randNumber } from "@ngneat/falso";
-import { ComboboxItem } from "@combobox/index";
+import { randProductName, randUuid, randNumber } from '@ngneat/falso';
+import { ComboboxItem } from '@combobox';
 
 export const generateMockItems = (count: number = 10): ComboboxItem[] => {
   return Array.from({ length: count }).map(() => ({

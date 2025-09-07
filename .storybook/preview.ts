@@ -1,4 +1,11 @@
-import type { Preview } from "@storybook/react";
+import type { Preview } from '@storybook/react-vite';
+import 'src/index.css';
+
+// Set test environment for Storybook
+if (typeof window !== 'undefined') {
+    // @ts-ignore - Set environment variables for testing
+    window.__STORYBOOK_ENV__ = 'test';
+}
 
 const preview: Preview = {
   parameters: {
@@ -9,7 +16,6 @@ const preview: Preview = {
       },
     },
   },
-  tags: ["autodocs"],
 };
 
 export default preview;
