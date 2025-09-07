@@ -13,10 +13,11 @@
   "scripts": {
     "dev": "NODE_ENV=development vite --config vite.dev.config.ts",
     "preview": "vite preview --config vite.dev.config.ts",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
     "build": "pnpm vite:build-production",
     "webpack:build-dev": "NODE_ENV=development webpack --config webpack.config.js --mode=development",
-    "webpack:build-production": "rm -rf lib && NODE_ENV=production WEBPACK_OPTIMIZE=true WEBPACK_BUNDLE_ANALYZER=true WEBPACK_GENERATE_HTML=false webpack --config webpack.config.js --mode=production",
-    "webpack:build-fast": "rm -rf lib && NODE_ENV=production WEBPACK_OPTIMIZE=true WEBPACK_GENERATE_HTML=false webpack --config webpack.config.js --mode=production",
+    "webpack:build-production": "rm -rf lib && NODE_ENV=production WEBPACK_OPTIMIZE=true webpack --config webpack.config.js --mode=production",
     "vite:build-dev": " NODE_ENV=development BUILD_TYPE=main vite build --config vite.main.config.ts",
     "vite:build-production": "pnpm vite:build-main && pnpm vite:build-components",
     "vite:build-main": " NODE_ENV=production BUILD_TYPE=main vite build --config vite.main.config.ts",
@@ -56,6 +57,9 @@
     "@svgr/webpack": "^5.5.0",
     "@tailwindcss/postcss": "^4.1.12",
     "@tailwindcss/vite": "^4.1.12",
+    "@testing-library/jest-dom": "^6.8.0",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
     "@types/jest": "^27.5.2",
     "@types/lodash": "^4.17.16",
     "@types/node": "^20.19.11",
@@ -117,6 +121,7 @@
     "style-loader": "^4.0.0",
     "tailwindcss": "^4.1.12",
     "terser-webpack-plugin": "^5.2.5",
+    "ts-jest": "^29.4.1",
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
     "tsconfig-paths-webpack-plugin": "^4.2.0",
@@ -148,15 +153,14 @@
     ]
   },
   "jest": {
+    "preset": "ts-jest/presets/js-with-ts",
+    "testEnvironment": "jsdom",
     "roots": [
       "<rootDir>/src"
     ],
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,ts,tsx}",
       "!src/**/*.d.ts"
-    ],
-    "setupFiles": [
-      "react-app-polyfill/jsdom"
     ],
     "setupFilesAfterEnv": [
       "<rootDir>/src/setupTests.ts"
@@ -165,40 +169,31 @@
       "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
       "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
     ],
-    "testEnvironment": "jsdom",
     "transform": {
-      "^.+\\.(js|jsx|mjs|cjs|ts|tsx)$": "<rootDir>/config/jest/babelTransform.js",
-      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
-      "^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
+      "^.+\\.(ts|tsx)$": "ts-jest",
+      "^.+\\.(js|jsx)$": "babel-jest"
     },
     "transformIgnorePatterns": [
       "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|cjs|ts|tsx)$",
       "^.+\\.module\\.(css|sass|scss)$"
     ],
-    "modulePaths": [],
     "moduleNameMapper": {
-      "^react-native$": "react-native-web",
-      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy",
-      "^@/src/(.*)$": "<rootDir>/src/$1",
+      "^.+\\.(css|sass|scss)$": "identity-obj-proxy",
       "^@combobox/(.*)$": "<rootDir>/src/@combobox/$1",
       "^@input/(.*)$": "<rootDir>/src/@input/$1",
       "^@label/(.*)$": "<rootDir>/src/@label/$1",
-      "^@icon/(.*)$": "<rootDir>/src/@icon/$1",
+      "^@icons/(.*)$": "<rootDir>/src/@icons/$1",
       "^@hook/(.*)$": "<rootDir>/src/@hook/$1",
       "^@button/(.*)$": "<rootDir>/src/@button/$1",
       "^@zustand/(.*)$": "<rootDir>/src/@zustand/$1",
       "^@utils/(.*)$": "<rootDir>/src/@utils/$1"
     },
     "moduleFileExtensions": [
-      "web.js",
-      "js",
-      "web.ts",
       "ts",
-      "web.tsx",
       "tsx",
-      "json",
-      "web.jsx",
+      "js",
       "jsx",
+      "json",
       "node"
     ],
     "watchPlugins": [

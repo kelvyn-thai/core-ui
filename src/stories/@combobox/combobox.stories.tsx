@@ -211,11 +211,11 @@ export const EmptyState: Story = {
     const input = canvas.getByTestId('input');
     await userEvent.click(input);
 
-    // Test empty state shows no data message
+    // Test empty state shows no result message
     const dropdown = canvas.getByTestId('dropdown-menu');
     expect(dropdown).toBeInTheDocument();
-    expect(canvas.getByText('No data')).toBeInTheDocument();
-    expect(canvas.getByText('No data')).toHaveClass('base-combobox__message');
+    expect(canvas.getByText("No result matching 'xyz'")).toBeInTheDocument();
+    expect(canvas.getByText("No result matching 'xyz'")).toHaveClass('base-combobox__message');
   },
 };
 
